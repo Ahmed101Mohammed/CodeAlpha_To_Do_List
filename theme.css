@@ -1,0 +1,17 @@
+:root
+{
+    /* coloring */
+    --white: #ffffff;
+    --black: #1C1D22;
+    --black-50: #1c1d2281;
+    --black-12: #1c1d2225;
+    --black-10: #1c1d221f;
+    --black-8: #1c1d2211;
+    --black-6: #1c1d220b;
+    --red: #FF7979;
+    --red-10: #ff79791e;
+    --orang: #FFA048;
+    --orang-10: #ffa0481e;
+    --gray: #888DA7;
+    --gray-10: #888da71e;
+}
