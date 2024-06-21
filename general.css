@@ -1,3 +1,9 @@
+/* all elements */
+*
+{
+    box-sizing: border-box;
+}
+
 /* body */
 body 
 {
@@ -6,4 +12,25 @@ body
     padding: 0px;
     background-color: var(--white);
     font-family: "Exo 2", sans-serif;
+    display: grid;
+    grid-template-columns: 318px 1fr;
+}
+
+/* anchors */
+a
+{
+    text-decoration: none;
+}
+
+/* ul */
+ul
+{
+    list-style: none;
+}
+
+/* margin & padding 0px */
+p, h1, h2, h3, h4, h5, h6, ul
+{
+    margin: 0px;
+    padding: 0px;
 }

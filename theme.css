@@ -1,7 +1,8 @@
 :root
 {
     /* coloring */
-    --white: #ffffff;
+    --white: #fff;
+    --white-2: #EEE;
     --black: #1C1D22;
     --black-50: #1c1d2281;
     --black-12: #1c1d2225;
