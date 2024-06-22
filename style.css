@@ -60,3 +60,133 @@ aside a::before
     left: 0px;
     top: 50%;
 }
+
+/* header */
+header
+{
+    padding: 29px 32px;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+header h1
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--black);
+}
+
+header p
+{
+    font-size: 14px;
+    color: var(--black-50);
+}
+
+/* list cards container section */
+.lists-cards-container
+{
+    padding: 32px 28px;
+    background-color: var(--white-3);
+    display: flex;
+    gap: 32px;
+    min-height: calc(100dvh - 118px);
+    justify-content: space-between;
+}
+
+.to-do-list-card
+{
+    padding: 20px;
+    background-color: var(--white);
+    border: 2px var(--white-2) solid;
+    border-radius: 10px;
+    height: fit-content;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+}
+
+.to-do-list-card .head
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.to-do-list-card .info-header
+{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-header h2
+{
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--black);
+    cursor: pointer;
+}
+
+.info-header p
+{
+    font-size: 14px;
+    color: var(--black-50);
+    font-weight: 500;
+}
+
+.head span
+{
+    color: var(--red);
+    cursor: pointer;
+}
+
+.progress
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress .text-info
+{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--black-50);
+    font-weight: 600;
+}
+
+.text-info .progress-value
+{
+    color: var(--black)
+}
+
+.progress .progress-bar
+{
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--black-8);
+}
+
+.progress-bar .progress-done
+{
+    width: 20%;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--red);
+}
+
+.side-details .date
+{
+    background-color: var(--orang-10);
+    color: var(--orang);
+    padding: 8px 16px;
+    border-radius: 17px;
+    font-size: 14px;
+    font-weight: 600;
+    width: fit-content;
+}
