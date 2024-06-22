@@ -1,0 +1,124 @@
+body
+{
+    display: flex;
+    flex-direction: column;
+}
+
+/* header */
+header
+{
+    padding: 32px 28px;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+header h1
+{
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--black);
+}
+
+header p
+{
+    color: var(--black-50);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* main */
+main
+{
+    padding: 32px 28px;
+    background-color: var(--white-3);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    height: calc(100dvh - 109px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+main form
+{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 5px;
+    color: var(--black);
+    font-weight: 600;
+    font-size: 14px;
+    border: 2px var(--white-2) solid;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+main form label
+{
+    width: fit-content;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+main form input
+{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: var(--white);
+    color: var(--black);
+    font-weight: 600;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 2px var(--white-2) solid;
+    outline: none;
+}
+
+main form button
+{
+    padding: 10px;
+    border: none;
+    background-color: var(--red);
+    color: var(--white);
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+main ul
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+main ul li
+{
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: var(--black);
+    font-weight: 600;
+    font-size: 14px;
+    gap: 10px;
+}
+
+main ul li input
+{
+    width: 20px;
+    height: 20px;
+    accent-color: var(--red);
+    cursor: pointer;
+}
