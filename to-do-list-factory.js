@@ -76,10 +76,16 @@ const ToDoList = (title, description, date, ...items) => {
         addToDoListToDBAndDOM () 
         {
             const lists = JSON.parse(localStorage.getItem("lists"));
+            const listWithSameName = lists.find(list => list.title === this.title);
+            if(listWithSameName)
+            {
+                return false;
+            }
+
             lists.push({title: this.title, description: this.description, date: this.date, items: this.items});
             localStorage.setItem("lists", JSON.stringify(lists));
-
             this.addToDom();
+            return true;
         },
         convertDateToString () {
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

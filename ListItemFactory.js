@@ -39,15 +39,17 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 }
             );
 
-            targetList.items.push({content, isDone, parentIdFormat});
-            console.log({targetList})
+            const listItem = targetList.items.find(item => item.content === this.content);
+            if(listItem){return false};
+           
+            targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});
             let newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== targetList.title);
             newLists.push(targetList);
-            console.log({newLists})
 
             localStorage.setItem("lists", JSON.stringify(newLists));
 
             this.addToDom();
+            return true;
         },
         deleteFromDBAndDom()
         {
