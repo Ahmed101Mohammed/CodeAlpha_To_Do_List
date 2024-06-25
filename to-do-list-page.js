@@ -32,6 +32,7 @@ addNewListItem.addEventListener("click", (event) => {
     if(content)
     {
         toDoListObject.addItemToDBAndDom(content, false);
+        document.querySelector("form input").value = "";
     }
 })
 
