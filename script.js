@@ -100,7 +100,7 @@ navBtns.addEventListener("click", (event) => {
 // when click in link of aside when window width is less than 480px => close aside
 const aside = document.querySelector("aside");
 aside.addEventListener("click", (event) => {
-    if(event.target.nodeName == "A" && window.innerWidth < 480)
+    if(event.target.nodeName == "A" && window.innerWidth < 700)
     {
         aside.style.removeProperty("display");
         navBtns.querySelector('span').textContent = "menu";

@@ -9,7 +9,7 @@ aside
     height: 100dvh;
 }
 
-@media (max-width: 480px)
+@media (max-width: 700px)
 {
     aside
     {
@@ -72,7 +72,7 @@ aside a:hover
     color: var(--black);
 }
 
-@media (max-width: 480px) 
+@media (max-width: 700px) 
 {
     aside h2
     {
@@ -127,7 +127,7 @@ main
     flex-direction: column;
 }
 
-@media (max-width: 480px)
+@media (max-width: 700px)
 {
     main
     {
@@ -261,7 +261,7 @@ button.nav-btn:hover
     color: var(--black);
 }
 
-@media (max-width: 480px)
+@media (max-width: 700px)
 {
     button.nav-btn
     {
