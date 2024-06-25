@@ -49,7 +49,7 @@ const ToDoList = (title, description, date, ...items) => {
                             <span>Progress</span><span class="progress-value">${this.isDoneItemsNumber()}/${this.items.length}</span>
                         </p>
                         <div class="progress-bar">
-                            <div class="progress-done" style="width:${this.progress_percentage()}%"></div>
+                            <div class="progress-done ${this.progressBarColor()}" style="width:${this.progress_percentage()}%"></div>
                         </div>
                     </div>
                     <div class="side-details">
@@ -64,6 +64,13 @@ const ToDoList = (title, description, date, ...items) => {
                 return 0;
             }
             return (this.isDoneItemsNumber()/this.items.length)*100;
+        },
+        progressBarColor() {
+            if(this.progress_percentage() === 100)
+            {
+                return "progress-done-green";
+            }
+            return ""
         },
         addToDom()
         {
