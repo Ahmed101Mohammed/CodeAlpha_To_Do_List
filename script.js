@@ -2,7 +2,7 @@
 if(!localStorage.getItem("lists", JSON.stringify([])))
 {
     console.log("DB created");
-    localStorage.setItem("lists", JSON.stringify([]));
+    localStorage.setItem("lists", JSON.stringify([introductionAppToDoList]));
 }
 
 // evenr for plus sign to create new to-do-list
