@@ -54,6 +54,14 @@ const ToDoList = (title, description, date, ...items) => {
                     </div>
                     <div class="side-details">
                         <p class="date">${this.convertDateToString()}</p>
+                        <div class="up-down">
+                            <span class="material-symbols-outlined list-up">
+                                keyboard_arrow_up
+                            </span>
+                            <span class="material-symbols-outlined list-down">
+                                keyboard_arrow_down
+                            </span>
+                        </div>
                     </div>
                 </div>
             `

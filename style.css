@@ -231,6 +231,14 @@ main
     background-color: var(--red);
 }
 
+.side-details
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
 .side-details .date
 {
     background-color: var(--orang-10);
@@ -240,8 +248,27 @@ main
     font-size: 14px;
     font-weight: 600;
     width: fit-content;
+    height: fit-content;
 }
 
+.side-details .up-down
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.up-down span
+{
+    color: var(--black-50);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.up-down span:hover
+{
+    color: var(--black);
+}
 button.nav-btn
 {
     position: fixed;
