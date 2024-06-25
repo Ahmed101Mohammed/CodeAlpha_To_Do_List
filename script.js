@@ -79,3 +79,30 @@ lestsContainer.addEventListener("click", (event) => {
         window.open(`to-do-list-page.html?listId=${listId}`, "_blank");
     }
 })
+
+// add click event for nav-btn
+const navBtns = document.querySelector(".nav-btn");
+navBtns.addEventListener("click", (event) => {
+    const aside = document.querySelector("aside");
+    if(aside.style.display == "flex")
+    {
+        aside.style.removeProperty("display");
+        navBtns.querySelector('span').textContent = "menu";
+    }
+    else
+    {
+        aside.style.display = "flex";
+        navBtns.querySelector('span').textContent = "close";
+    }
+})
+
+
+// when click in link of aside when window width is less than 480px => close aside
+const aside = document.querySelector("aside");
+aside.addEventListener("click", (event) => {
+    if(event.target.nodeName == "A" && window.innerWidth < 480)
+    {
+        aside.style.removeProperty("display");
+        navBtns.querySelector('span').textContent = "menu";
+    }
+})

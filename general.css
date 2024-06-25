@@ -10,11 +10,18 @@ body
     width: 100%;
     margin: 0px;
     padding: 0px;
-    background-color: var(--white);
+    background-color: var(--white-3);
     font-family: "Exo 2", sans-serif;
     display: grid;
     grid-template-columns: 318px 1fr;
     position: relative;
+}
+@media (max-width: 480px)
+{
+    body
+    {
+        display: block;
+    }
 }
 
 /* anchors */
@@ -34,4 +41,11 @@ p, h1, h2, h3, h4, h5, h6, ul
 {
     margin: 0px;
     padding: 0px;
+}
+
+/* border & outline none */
+button, input
+{
+    border: none;
+    outline: none;
 }
