@@ -108,10 +108,17 @@ main ul li
     background-color: var(--white);
     border-radius: 5px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     color: var(--black);
     font-weight: 600;
     font-size: 14px;
+}
+
+li .body
+{
+    display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -121,4 +128,21 @@ main ul li input
     height: 20px;
     accent-color: var(--red);
     cursor: pointer;
+}
+
+
+li span
+{
+    cursor: pointer;
+    color: var(--black-50);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+li span:hover
+{
+    color: var(--red);
 }

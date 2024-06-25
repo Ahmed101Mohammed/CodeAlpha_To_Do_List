@@ -1,0 +1,3 @@
+errors to handle:
+1. no dublicated lists names.
+2. no dublicated list item content in the same list.
