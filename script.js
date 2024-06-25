@@ -76,6 +76,6 @@ lestsContainer.addEventListener("click", (event) => {
         const list = event.target.parentNode.parentNode.parentNode;
         const listId = list.id;
 
-        window.location.href = `to-do-list-page.html?listId=${listId}`;
+        window.open(`to-do-list-page.html?listId=${listId}`, "_blank");
     }
 })
