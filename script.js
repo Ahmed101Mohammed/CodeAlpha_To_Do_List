@@ -106,3 +106,40 @@ aside.addEventListener("click", (event) => {
         navBtns.querySelector('span').textContent = "menu";
     }
 })
+
+// list-up click event: change the list order in the db, and dom to be more previous
+const listsContainer = document.querySelector(".lists-cards-container");
+listsContainer.addEventListener("click", (event) => {
+    if(event.target.classList.contains("list-up"))
+    {
+        const list = event.target.parentNode.parentNode.parentNode;
+        const listId = list.id;
+
+        let targetlist = JSON.parse(localStorage.getItem("lists")).find(list =>
+            {
+                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
+                return listObject.convertTitleToDashedLowerCase() == listId;
+            }
+        )        
+        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, ...targetlist.items);
+        targetListObject.priorityUp();
+    }
+})
+
+// list-down click event: change the list order in the db, and dom to be more next
+listsContainer.addEventListener("click", (event) => {
+    if(event.target.classList.contains("list-down"))
+    {
+        const list = event.target.parentNode.parentNode.parentNode;
+        const listId = list.id;
+
+        let targetlist = JSON.parse(localStorage.getItem("lists")).find(list =>
+            {
+                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
+                return listObject.convertTitleToDashedLowerCase() == listId;
+            }
+        )        
+        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, ...targetlist.items);
+        targetListObject.priorityDown();
+    }
+})

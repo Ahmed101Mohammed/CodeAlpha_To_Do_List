@@ -175,6 +175,38 @@ const ToDoList = (title, description, date, ...items) => {
         {
             const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentIdFormat);
             listItemObject.updateInDB();
+        },
+        priorityUp()
+        {
+            const lists = JSON.parse(localStorage.getItem("lists"));
+            const listObject = lists.find(list => list.title === this.title);
+            const listIndex = lists.indexOf(listObject);
+            if(listIndex > 0)
+            {
+                // swap lists on DB
+                lists.splice(listIndex, 1);
+                lists.splice(listIndex - 1, 0, listObject);
+                localStorage.setItem("lists", JSON.stringify(lists));
+
+                // rerender dom
+                window.location.reload();
+            }
+        },
+        priorityDown()
+        {
+            const lists = JSON.parse(localStorage.getItem("lists"));
+            const listObject = lists.find(list => list.title === this.title);
+            const listIndex = lists.indexOf(listObject);
+            if(listIndex < lists.length - 1)
+            {
+                // swap lists on DB
+                lists.splice(listIndex, 1);
+                lists.splice(listIndex + 1, 0, listObject);
+                localStorage.setItem("lists", JSON.stringify(lists));
+
+                // rerender dom
+                window.location.reload();
+            }
         }
     }
 }
