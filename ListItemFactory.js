@@ -96,7 +96,53 @@ const ListItem = (content, isDone, parentIdFormat)=>
             let newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== targetList.title);
             newLists.push(targetList);
             localStorage.setItem("lists", JSON.stringify(newLists));
-        }
+        },
+        priorityUp()
+        {
+            const lists = JSON.parse(localStorage.getItem("lists"));
+            const listItems = lists.find(list =>
+                {
+                    const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
+                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                }
+            );
+
+            const listItem = listItems.items.find(item => item.content === this.content);
+            const listItemIndex = listItems.items.indexOf(listItem);
+            if(listItemIndex > 0)
+            {
+                // swap list-items in DB
+                listItems.items.splice(listItemIndex, 1);
+                listItems.items.splice(listItemIndex - 1, 0, listItem);
+                localStorage.setItem("lists", JSON.stringify(lists));
+
+                // rerender dom
+                window.location.reload();
+            }
+        },
+        priorityDown()
+        {
+            const lists = JSON.parse(localStorage.getItem("lists"));
+            const listItems = lists.find(list =>
+                {
+                    const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
+                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                }
+            );
+
+            const listItem = listItems.items.find(item => item.content === this.content);
+            const listItemIndex = listItems.items.indexOf(listItem);
+            if(listItemIndex < listItems.items.length - 1)
+            {
+                // swap list-items in DB
+                listItems.items.splice(listItemIndex, 1);
+                listItems.items.splice(listItemIndex + 1, 0, listItem);
+                localStorage.setItem("lists", JSON.stringify(lists));
+
+                // rerender dom
+                window.location.reload();
+            }
         
+        }
     }
 }

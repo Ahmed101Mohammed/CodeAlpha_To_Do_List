@@ -207,6 +207,17 @@ const ToDoList = (title, description, date, ...items) => {
                 // rerender dom
                 window.location.reload();
             }
+        },
+        priorityUpForListItem(listItemData)
+        {
+            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentIdFormat);
+            listItemObject.priorityUp();
+        },
+        priorityDownForListItem(listItemData)
+        {
+            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentIdFormat);
+            listItemObject.priorityDown();
         }
+
     }
 }

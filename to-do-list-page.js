@@ -60,3 +60,27 @@ listItemsContainer.addEventListener("click", (event) => {
         toDoListObject.updateListItemInDB({content, parentIdFormat, isDone});
     }
 })
+
+// item-list-up click event: change the item-list order in the db, and dom to be more previous
+listItemsContainer.addEventListener("click", (event) => {
+    if(event.target.classList.contains("item-up"))
+    {
+        const listItem = event.target.parentNode.parentNode.parentNode;
+        const parentIdFormat = listItem.classList[0];
+        const content = listItem.querySelector("p").textContent;
+        const isDone = listItem.querySelector("input").checked;
+        toDoListObject.priorityUpForListItem({content, parentIdFormat, isDone});
+    }
+})
+
+// item-list-down click event: change the item-list order in the db, and dom to be more next
+listItemsContainer.addEventListener("click", (event) => {
+    if(event.target.classList.contains("item-down"))
+    {
+        const listItem = event.target.parentNode.parentNode.parentNode;
+        const parentIdFormat = listItem.classList[0];
+        const content = listItem.querySelector("p").textContent;
+        const isDone = listItem.querySelector("input").checked;
+        toDoListObject.priorityDownForListItem({content, parentIdFormat, isDone});
+    }
+})
