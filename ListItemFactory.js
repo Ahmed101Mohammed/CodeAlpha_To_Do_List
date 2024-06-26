@@ -9,10 +9,18 @@ const ListItem = (content, isDone, parentIdFormat)=>
             return `
                 <li class="${parentIdFormat}"> 
                     <div class="body"><input type="checkbox" ${this.addCheckedAttribute()}> <p>${content}<p></div> 
-                    <div class="close">
-                        <span class="material-symbols-outlined delete-item">
-                            close
-                        </span>
+                    <div class="sittings">
+                        <div class="up-down">
+                            <span class="material-symbols-outlined item-up">
+                                keyboard_arrow_up
+                            </span>
+                            <span class="material-symbols-outlined item-down">
+                                keyboard_arrow_down
+                            </span>
+                        </div>
+                        <div class="close">
+                            <span class="material-symbols-outlined delete-item">close</span>
+                        </div>
                     </div>
                 </li>
             `

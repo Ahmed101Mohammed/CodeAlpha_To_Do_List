@@ -1,0 +1,18 @@
+.up-down
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.up-down span
+{
+    color: var(--black-50);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.up-down span:hover
+{
+    color: var(--black);
+}

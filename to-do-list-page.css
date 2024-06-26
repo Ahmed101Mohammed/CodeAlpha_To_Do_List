@@ -154,3 +154,10 @@ li span:hover
 {
     color: var(--red);
 }
+
+li .sittings
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
