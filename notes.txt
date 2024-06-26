@@ -1,3 +1,4 @@
-errors to handle:
-1. no dublicated lists names.
-2. no dublicated list item content in the same list.
+Tasks:
+[ ] Complate the readme features
+[ ] Make the video that descipe you application usage.
+[ ] Go throwgh the process to publich your project for Code Alpha.
