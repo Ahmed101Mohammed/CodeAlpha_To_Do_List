@@ -2,6 +2,7 @@ body
 {
     display: flex;
     flex-direction: column;
+    height: 100dvh;
 }
 
 /* header */
@@ -44,7 +45,7 @@ main
     display: flex;
     flex-direction: column;
     gap: 32px;
-    height: calc(100dvh - 109px);
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
