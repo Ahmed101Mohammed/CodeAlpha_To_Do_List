@@ -1,4 +1,0 @@
-Tasks:
-[ ] Complate the readme features
-[ ] Make the video that descipe you application usage.
-[ ] Go throwgh the process to publich your project for Code Alpha.
