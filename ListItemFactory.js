@@ -19,7 +19,7 @@ const ListItem = (content, isDone, parentIdFormat)=>
                             </span>
                         </div>
                         <div class="close">
-                            <span class="material-symbols-outlined delete-item">close</span>
+                            <span class="material-symbols-outlined delete-item delete-item">close</span>
                         </div>
                     </div>
                 </li>

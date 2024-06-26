@@ -41,7 +41,7 @@ const listItemsContainer = document.querySelector("ul");
 listItemsContainer.addEventListener("click", (event) => {
     if(event.target.classList.contains("delete-item"))
     {
-        const listItem = event.target.parentNode.parentNode;
+        const listItem = event.target.parentNode.parentNode.parentNode;
         const parentIdFormat = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
