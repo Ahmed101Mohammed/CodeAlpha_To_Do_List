@@ -138,13 +138,12 @@ main
 .lists-cards-container
 {
     padding: 32px 28px;
-    background-color: var(--white-3);
     display: grid;
     grid-template-columns: repeat(auto-fit, 320px);
     gap: 32px 32px;
     justify-content: center;   
     overflow-y: auto;
-    height: 100%;
+    height: auto;
 }
 
 .to-do-list-card
