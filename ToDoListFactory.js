@@ -90,15 +90,17 @@ const ToDoList = (title, description, date, ...items) => {
         },
         addToDoListToDBAndDOM () 
         {
-            const lists = JSON.parse(localStorage.getItem("lists"));
-            const listWithSameName = lists.find(list => list.title === this.title);
+            let db = JSON.parse(localStorage.getItem("db"));
+            let lists = db.lists;
+            let listWithSameName = lists.find(list => list.title === this.title);
             if(listWithSameName)
             {
                 return false;
             }
 
             lists.push({title: this.title, description: this.description, date: this.date, items: this.items});
-            localStorage.setItem("lists", JSON.stringify(lists));
+            db.status = "AddingNewList";
+            localStorage.setItem("db", JSON.stringify(db));
             this.addToDom();
             return true;
         },
@@ -131,8 +133,10 @@ const ToDoList = (title, description, date, ...items) => {
         },
         deleteFromDBAndDom()
         {
-            const newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== this.title);
-            localStorage.setItem("lists", JSON.stringify(newLists));
+            let db = JSON.parse(localStorage.getItem("db"));
+            db.lists = db.lists.filter(list => list.title !== this.title);
+            db.status = "DeletingList";
+            localStorage.setItem("db", JSON.stringify(db));
 
             const listCard = document.querySelector(`#${this.convertTitleToDashedLowerCase()}`);
             listCard.remove();
@@ -178,15 +182,17 @@ const ToDoList = (title, description, date, ...items) => {
         },
         priorityUp()
         {
-            const lists = JSON.parse(localStorage.getItem("lists"));
-            const listObject = lists.find(list => list.title === this.title);
-            const listIndex = lists.indexOf(listObject);
+            let db = JSON.parse(localStorage.getItem("db"));
+            let lists = db.lists;
+            let listObject = lists.find(list => list.title === this.title);
+            let listIndex = lists.indexOf(listObject);
             if(listIndex > 0)
             {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex - 1, 0, listObject);
-                localStorage.setItem("lists", JSON.stringify(lists));
+                db.status = "UpdatingListPeriority";
+                localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
                 window.location.reload();
@@ -194,15 +200,17 @@ const ToDoList = (title, description, date, ...items) => {
         },
         priorityDown()
         {
-            const lists = JSON.parse(localStorage.getItem("lists"));
-            const listObject = lists.find(list => list.title === this.title);
-            const listIndex = lists.indexOf(listObject);
+            let db = JSON.parse(localStorage.getItem("db"));
+            let lists = db.lists;
+            let listObject = lists.find(list => list.title === this.title);
+            let listIndex = lists.indexOf(listObject);
             if(listIndex < lists.length - 1)
             {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex + 1, 0, listObject);
-                localStorage.setItem("lists", JSON.stringify(lists));
+                db.status = "UpdatingListPeriority";
+                localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
                 window.location.reload();

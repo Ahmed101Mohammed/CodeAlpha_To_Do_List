@@ -43,7 +43,8 @@ const ListItem = (content, isDone, parentIdFormat)=>
             },
             addListItemToDBAndDOM()
             {
-                let lists = JSON.parse(localStorage.getItem("lists"));
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
                 const targetList = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
@@ -54,24 +55,25 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 const listItem = targetList.items.find(item => item.content === this.content);
                 if(listItem){return false};
                
-                targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});    
-                localStorage.setItem("lists", JSON.stringify(lists));
+                targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});
+                db.status = "AddingNewItem"  
+                localStorage.setItem("db", JSON.stringify(db));
     
                 this.addToDom();
                 return true;
             },
             deleteFromDBAndDom()
             {
-                const targetList = JSON.parse(localStorage.getItem("lists")).find(list => 
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
+                let targetList = lists.find(list => 
                 {
                     const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                     return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
                 });
                 targetList.items = targetList.items.filter(item => item.content !== this.content);
-                let newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== targetList.title);
-                newLists.push(targetList);
-                localStorage.setItem("lists", JSON.stringify(newLists));
-    
+                db.status = "DeletingItem";
+                localStorage.setItem("db", JSON.stringify(db));
                 this.deleteListItemFromDom();
             },
             deleteListItemFromDom()
@@ -87,9 +89,9 @@ const ListItem = (content, isDone, parentIdFormat)=>
             },
             updateInDB()
             {
-                const lists = JSON.parse(localStorage.getItem("lists"));
-                console.log({lists});
-                const targetList = lists.find(list => 
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
+                let targetList = lists.find(list => 
                 {
                     const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                     return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat;
@@ -99,13 +101,14 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 item.isDone = this.isDone;
                 item.content = this.content;
                 item.parentIdFormat = this.parentIdFormat;
-                console.log({lists});
-                localStorage.setItem("lists", JSON.stringify(lists));
+                db.status = "UpdatingItemData";
+                localStorage.setItem("db", JSON.stringify(db));
             },
             priorityUp()
             {
-                const lists = JSON.parse(localStorage.getItem("lists"));
-                const listItems = lists.find(list =>
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
+                let listItems = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                         return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
@@ -119,7 +122,8 @@ const ListItem = (content, isDone, parentIdFormat)=>
                     // swap list-items in DB
                     listItems.items.splice(listItemIndex, 1);
                     listItems.items.splice(listItemIndex - 1, 0, listItem);
-                    localStorage.setItem("lists", JSON.stringify(lists));
+                    db.status = "UpdatingItemPeriority";
+                    localStorage.setItem("db", JSON.stringify(db));
     
                     // rerender dom
                     window.location.reload();
@@ -127,23 +131,25 @@ const ListItem = (content, isDone, parentIdFormat)=>
             },
             priorityDown()
             {
-                const lists = JSON.parse(localStorage.getItem("lists"));
-                const listItems = lists.find(list =>
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
+                let listItems = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                         return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
                     }
                 );
     
-                const listItem = listItems.items.find(item => item.content === this.content);
-                const listItemIndex = listItems.items.indexOf(listItem);
+                let listItem = listItems.items.find(item => item.content === this.content);
+                let listItemIndex = listItems.items.indexOf(listItem);
                 if(listItemIndex < listItems.items.length - 1)
                 {
                     // swap list-items in DB
                     listItems.items.splice(listItemIndex, 1);
                     listItems.items.splice(listItemIndex + 1, 0, listItem);
-                    localStorage.setItem("lists", JSON.stringify(lists));
-    
+                    db.status = "UpdatingItemPeriority"
+                    localStorage.setItem("db", JSON.stringify(db));
+
                     // rerender dom
                     window.location.reload();
                 }

@@ -11,7 +11,7 @@ const preventAccessingWithoutToDoList = ()=>
 preventAccessingWithoutToDoList();
 
 // set the global data 
-const toDoList = JSON.parse(localStorage.getItem("lists")).find(list => 
+const toDoList = JSON.parse(localStorage.getItem("db")).lists.find(list => 
     {
         let listObject = ToDoList(list.title, list.discription, list.date, ...list.items);
         return (listObject.convertTitleToDashedLowerCase() === listId);
