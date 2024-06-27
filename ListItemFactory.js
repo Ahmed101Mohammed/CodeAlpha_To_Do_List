@@ -8,7 +8,12 @@ const ListItem = (content, isDone, parentIdFormat)=>
         {
             return `
                 <li class="${parentIdFormat}"> 
-                    <div class="body"><input type="checkbox" ${this.addCheckedAttribute()}> <p>${content}<p></div> 
+                    <div class="body">
+                        <div class = "checkbox">
+                            <input type="checkbox" ${this.addCheckedAttribute()}>
+                        </div>
+                        <p>${content}<p>
+                    </div> 
                     <div class="sittings">
                         <div class="up-down">
                             <span class="material-symbols-outlined item-up">

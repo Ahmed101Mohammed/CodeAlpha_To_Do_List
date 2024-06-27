@@ -68,18 +68,6 @@ lists.forEach(list => {
     newList.addToDom();
 })
 
-// list title click event => moving to to-do-list-page
-lestsContainer.addEventListener("click", (event) => {
-    if(event.target.classList.contains("list-tilte"))
-    {
-        // detect list-card from DOM
-        const list = event.target.parentNode.parentNode.parentNode;
-        const listId = list.id;
-
-        window.open(`to-do-list-page.html?listId=${listId}`, "_blank");
-    }
-})
-
 // add click event for nav-btn
 const navBtns = document.querySelector(".nav-btn");
 navBtns.addEventListener("click", (event) => {

@@ -12,7 +12,7 @@ header
     background-color: var(--white);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
 header h1
@@ -24,6 +24,10 @@ header h1
 
 @media (max-width: 700px)
 {
+    header
+    {
+        padding: 16px 14px;
+    }
     header h1
     {
         font-size: 20px;
@@ -34,7 +38,6 @@ header p
 {
     color: var(--black-50);
     font-size: 16px;
-    font-weight: 600;
 }
 
 /* main */
@@ -45,9 +48,17 @@ main
     display: flex;
     flex-direction: column;
     gap: 32px;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: calc(100dvh - 129px);
+
+}
+
+@media (max-width: 700px)
+{
+    main
+    {
+        padding: 16px 14px;
+        gap: 16px;
+    }
 }
 
 main form
@@ -62,11 +73,20 @@ main form
     border-radius: 5px;
     color: var(--black);
     font-weight: 600;
-    font-size: 14px;
     border: 2px var(--white-2) solid;
     position: sticky;
     top: 0;
     z-index: 10;
+}
+
+@media (max-width: 700px)
+{
+    main form
+    {
+        padding: 5px;
+        border: none;
+        background-color: transparent;
+    }
 }
 
 main form label
@@ -109,6 +129,7 @@ main ul
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
 }
 
 main ul li
@@ -122,6 +143,7 @@ main ul li
     color: var(--black);
     font-weight: 600;
     font-size: 14px;
+    gap: 2px;
 }
 
 li .body
@@ -131,24 +153,41 @@ li .body
     gap: 10px;
 }
 
-main ul li input
+.checkbox input
 {
-    width: 20px;
-    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     accent-color: var(--red);
     cursor: pointer;
 }
+@media (max-width: 480px)
+{
+    .checkbox input
+    {
+        min-width: 15px;
+        min-height: 15px;
+    }
 
+    li .body p
+    {
+        font-size: 10px;
+    }
+}
 
 li span
 {
     cursor: pointer;
     color: var(--black-50);
     font-weight: 600;
-    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+@media (max-width: 480px){
+    li span
+    {
+        font-size: 16px!important;
+    }
 }
 
 li span:hover
@@ -160,5 +199,5 @@ li .sittings
 {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 }

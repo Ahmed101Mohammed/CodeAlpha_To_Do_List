@@ -37,7 +37,7 @@ const ToDoList = (title, description, date, ...items) => {
             <div class="to-do-list-card" id="${this.convertTitleToDashedLowerCase()}">
                     <div class="head">
                         <div class="info-header">
-                            <h2 class="list-tilte">${this.title}</h2>
+                            <a href="to-do-list-page.html?listId=${this.convertTitleToDashedLowerCase()}"><h2 class="list-tilte">${this.title}</h2></a>
                             <p class="list-discription">${this.description}</p>
                         </div>
                         <span class="material-symbols-outlined delete">
