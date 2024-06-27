@@ -2,3 +2,13 @@
 {
     background-color: var(--green) !important;
 }
+
+.done-list-item
+{
+    opacity: 0.7;
+}
+
+.done-list-item p
+{
+    text-decoration: line-through;
+}

@@ -49,7 +49,16 @@ main
     flex-direction: column;
     gap: 32px;
     height: calc(100dvh - 129px);
+    width:  1024px;
+    margin: 0 auto;
+}
 
+@media (max-width: 1024px)
+{
+    main
+    {
+        width: 100%;
+    }
 }
 
 @media (max-width: 700px)
@@ -125,11 +134,11 @@ main form button
 
 main ul
 {
-    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
     overflow-y: auto;
+    width: 100%;
 }
 
 main ul li

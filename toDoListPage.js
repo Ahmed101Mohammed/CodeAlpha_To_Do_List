@@ -44,8 +44,8 @@ listItemsContainer.addEventListener("click", (event) => {
         const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        const itemId = listItem.id;
-        toDoListObject.deleteListItemFromDBAndDom({content, isDone, parentId, itemId});
+        const id = listItem.id;
+        toDoListObject.deleteListItemFromDBAndDom({content, isDone, parentId, id});
     }
 })
 
@@ -57,8 +57,8 @@ listItemsContainer.addEventListener("click", (event) => {
         const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        const itemId = listItem.id;
-        toDoListObject.updateListItemInDB({content, isDone, parentId, itemId});
+        const id = listItem.id;
+        toDoListObject.updateListItemInDB({content, isDone, parentId, id});
     }
 })
 
@@ -70,8 +70,8 @@ listItemsContainer.addEventListener("click", (event) => {
         const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        const itemId = listItem.id;
-        toDoListObject.priorityUpForListItem({content, isDone, parentId, itemId});
+        const id = listItem.id;
+        toDoListObject.priorityUpForListItem({content, isDone, parentId, id});
     }
 })
 
@@ -83,7 +83,7 @@ listItemsContainer.addEventListener("click", (event) => {
         const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        const itemId = listItem.id;
-        toDoListObject.priorityDownForListItem({content, isDone, parentId, itemId});
+        const id = listItem.id;
+        toDoListObject.priorityDownForListItem({content, isDone, parentId, id});
     }
 })

@@ -8,7 +8,7 @@ const ListItem = (content, isDone, parentId, id)=>
             htmlCode()
             {
                 return `
-                    <li class="${parentId}" id="${this.id}"> 
+                    <li class="${parentId} ${this.isDone? "done-list-item" : ""}" id="${this.id}"> 
                         <div class="body">
                             <input type="checkbox" ${this.addCheckedAttribute()}>
                             <p>${content}<p>
@@ -54,12 +54,23 @@ const ListItem = (content, isDone, parentId, id)=>
     
                 const listItem = targetList.items.find(item => item.content === this.content);
                 if(listItem){return false};
+
+                // first done item index 
+                const firstDoneItemIndex = targetList.items.findIndex(item => item.isDone);
+                if(firstDoneItemIndex === -1)
+                {
+                    targetList.items.push({content: this.content, isDone: this.isDone, parentId: this.parentId, id: this.id});
+                }
+                else
+                {
+                    targetList.items.splice(firstDoneItemIndex, 0, {content: this.content, isDone: this.isDone, parentId: this.parentId, id: this.id});
+                }
                
-                targetList.items.push({content: this.content, isDone: this.isDone, parentId: this.parentId, id: this.id});
-                db.status = {name: "AddingNewItem", effectedListId: this.parentId};  
+                db.status = {name: "AddingNewItem", effectedListId: this.parentId};
                 localStorage.setItem("db", JSON.stringify(db));
     
                 this.addToDom();
+                this.updateListItemPositionInUI();
                 return true;
             },
             deleteFromDBAndDom()
@@ -98,9 +109,32 @@ const ListItem = (content, isDone, parentId, id)=>
                 let item = items.find(item => item.content === this.content);
                 item.isDone = this.isDone;
                 item.content = this.content;
-                item.parentId = this.parentId;
+                
+                items = items.filter(item => item.content !== this.content);
+                if(item.isDone)
+                {
+                    items.push(item);
+                    targetList.items = items;
+                }
+                else
+                {
+                    // first done item index 
+                    const firstDoneItemIndex = items.findIndex(item => item.isDone);
+                        
+                    if(firstDoneItemIndex === -1)
+                    {
+                        items.push(item);
+                    }
+                    else
+                    {
+                        items.splice(firstDoneItemIndex, 0, item);
+                    }
+                    targetList.items = items;
+                }
                 db.status = {name: "UpdatingItemData", effectedListId: this.parentId};
                 localStorage.setItem("db", JSON.stringify(db));
+                this.updateUIForDoneItem();
+                this.updateListItemPositionInUI();
             },
             priorityUp()
             {
@@ -116,6 +150,12 @@ const ListItem = (content, isDone, parentId, id)=>
                 const listItemIndex = targetList.items.indexOf(listItem);
                 if(listItemIndex > 0)
                 {
+                    const isItemDone = targetList.items[listItemIndex].isDone;
+                    const isPreviousItemDone = targetList.items[listItemIndex - 1].isDone;
+                    if(isItemDone !== isPreviousItemDone)
+                    {
+                        return;
+                    }
                     // swap list-items in DB
                     targetList.items.splice(listItemIndex, 1);
                     targetList.items.splice(listItemIndex - 1, 0, listItem);
@@ -140,6 +180,12 @@ const ListItem = (content, isDone, parentId, id)=>
                 let listItemIndex = targetList.items.indexOf(listItem);
                 if(listItemIndex < targetList.items.length - 1)
                 {
+                    const isItemDone = targetList.items[listItemIndex].isDone;
+                    const isNextItemDone = targetList.items[listItemIndex + 1].isDone;
+                    if(isItemDone !== isNextItemDone)
+                    {
+                        return false;
+                    }
                     // swap list-items in DB
                     targetList.items.splice(listItemIndex, 1);
                     targetList.items.splice(listItemIndex + 1, 0, listItem);
@@ -157,14 +203,26 @@ const ListItem = (content, isDone, parentId, id)=>
                     {
                         return list.id == this.parentId
                     }
-                )        
-                
+                )      
                 for(let itemIndex = 0; itemIndex < targetList.items.length; itemIndex++)
                 {
                     let item = targetList.items[itemIndex];
                     let itemObject = ListItem(item.content, item.isDone, item.parentId, item.id);
                     let itemLi = document.querySelector(`#${itemObject.id}`);
                     itemLi.style.order = itemIndex;
+                }
+            },
+            updateUIForDoneItem()
+            {
+                const listItem = document.querySelector(`#${this.id}`);
+                const isDone =listItem.querySelector("input").checked;
+                if(isDone)
+                {
+                    listItem.classList.add("done-list-item");
+                }
+                else
+                {
+                    listItem.classList.remove("done-list-item");
                 }
             }
         }
