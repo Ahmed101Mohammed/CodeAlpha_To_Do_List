@@ -43,4 +43,4 @@ I find that instead of saving the browser data in LocalStorage, which updates ea
 > ```
 
 ### Running:
-Guiding Youtube video will created soon.
+[Guiding Youtube video]( https://youtu.be/6BlZ7qfT0jU?si=vOrNjvl9BItbroBs)
