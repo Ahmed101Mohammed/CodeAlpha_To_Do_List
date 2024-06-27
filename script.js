@@ -36,7 +36,7 @@ addBtn.addEventListener("click", (event) => {
     {
         const list = ToDoList(title, description);
         list.addToDoListToDBAndDOM();
-        window.open(`to-do-list-page.html?listId=${list.convertTitleToDashedLowerCase()}`, "_blank");
+        window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
     }
 
     titleInput.value = "";
@@ -56,12 +56,11 @@ lestsContainer.addEventListener("click", (event) => {
         const listId = listDom.id;
         let targetlist = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
-                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                return listObject.convertTitleToDashedLowerCase() == listId;
+                return list.id == listId;
             }
         )
 
-        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, ...targetlist.items);
+        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, targetlist.id, ...targetlist.items);
         targetListObject.deleteFromDBAndDom();
     }
 })
@@ -69,7 +68,7 @@ lestsContainer.addEventListener("click", (event) => {
 // set predefined lists from local storage
 const lists = JSON.parse(localStorage.getItem("db")).lists;
 lists.forEach(list => {
-    let newList = ToDoList(list.title, list.description, list.date, ...list.items);
+    let newList = ToDoList(list.title, list.description, list.date, list.id, ...list.items);
     newList.addToDom();
 })
 
@@ -110,11 +109,10 @@ listsContainer.addEventListener("click", (event) => {
 
         let targetlist = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
-                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                return listObject.convertTitleToDashedLowerCase() == listId;
+                return list.id == listId;
             }
         )        
-        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, ...targetlist.items);
+        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, targetlist.id, ...targetlist.items);
         targetListObject.priorityUp();
     }
 })
@@ -128,11 +126,10 @@ listsContainer.addEventListener("click", (event) => {
 
         let targetlist = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
-                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                return listObject.convertTitleToDashedLowerCase() == listId;
+                return list.id == listId;
             }
         )        
-        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, ...targetlist.items);
+        let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, targetlist.id, ...targetlist.items);
         targetListObject.priorityDown();
     }
 })
@@ -149,11 +146,10 @@ addEventListener("storage", (event) =>
         const listId = dbStatus.effectedListId;
         let targetList = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
-                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                return listObject.convertTitleToDashedLowerCase() == listId;
+                return list.id == listId;
             }
         )        
-        let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, ...targetList.items);
+        let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, targetList.id, ...targetList.items);
         targetListObject.updateProgressComponentLive();
     }
 });

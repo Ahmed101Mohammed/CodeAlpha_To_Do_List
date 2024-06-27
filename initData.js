@@ -1,6 +1,8 @@
 let introductionAppToDoList = {
     title: "Discovering ToDoly application",
     description: "Checklists to check if you know all ToDoly features",
+    date: Date.now(),
+    id: `list${Date.now()}`,
     items: [
         {content: 'Create a new list with any unique name. (Note: you can\'t create two lists with the same name)', isDone: false, parentIdFormat: 'discovering-todoly-application'}
         , 
@@ -17,6 +19,5 @@ let introductionAppToDoList = {
         {content: 'Change the periority of your To Do List, to have the 1st periority. (by click on up arrow)', isDone: false, parentIdFormat: 'discovering-todoly-application'}
         ,
         {content: 'Delete "Discovering TODOly application" To Do List, now you are ready to use all ToDoly features.', isDone: false, parentIdFormat: 'discovering-todoly-application'}
-    ],
-    date: Date.now()
+    ]
 }

@@ -13,15 +13,14 @@ preventAccessingWithoutToDoList();
 // set the global data 
 const toDoList = JSON.parse(localStorage.getItem("db")).lists.find(list => 
     {
-        let listObject = ToDoList(list.title, list.discription, list.date, ...list.items);
-        return (listObject.convertTitleToDashedLowerCase() === listId);
+        return (list.id === listId);
     });
 if(!toDoList)
 {
     window.location.href = "index.html";
 }
 
-let toDoListObject = ToDoList(toDoList.title, toDoList.description, toDoList.date, ...toDoList.items);
+let toDoListObject = ToDoList(toDoList.title, toDoList.description, toDoList.date, toDoList.id, ...toDoList.items);
 toDoListObject.setInToDoListPageDOM();
 
 // add event for addig new list item to db and dom
@@ -42,10 +41,11 @@ listItemsContainer.addEventListener("click", (event) => {
     if(event.target.classList.contains("delete-item"))
     {
         const listItem = event.target.parentNode.parentNode.parentNode;
-        const parentIdFormat = listItem.classList[0];
+        const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        toDoListObject.deleteListItemFromDBAndDom({content, parentIdFormat, isDone});
+        const itemId = listItem.id;
+        toDoListObject.deleteListItemFromDBAndDom({content, isDone, parentId, itemId});
     }
 })
 
@@ -54,10 +54,11 @@ listItemsContainer.addEventListener("click", (event) => {
     if(event.target.tagName == "INPUT")
     {
         const listItem = event.target.parentNode.parentNode;
-        const parentIdFormat = listItem.classList[0];
+        const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        toDoListObject.updateListItemInDB({content, parentIdFormat, isDone});
+        const itemId = listItem.id;
+        toDoListObject.updateListItemInDB({content, isDone, parentId, itemId});
     }
 })
 
@@ -66,10 +67,11 @@ listItemsContainer.addEventListener("click", (event) => {
     if(event.target.classList.contains("item-up"))
     {
         const listItem = event.target.parentNode.parentNode.parentNode;
-        const parentIdFormat = listItem.classList[0];
+        const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        toDoListObject.priorityUpForListItem({content, parentIdFormat, isDone});
+        const itemId = listItem.id;
+        toDoListObject.priorityUpForListItem({content, isDone, parentId, itemId});
     }
 })
 
@@ -78,9 +80,10 @@ listItemsContainer.addEventListener("click", (event) => {
     if(event.target.classList.contains("item-down"))
     {
         const listItem = event.target.parentNode.parentNode.parentNode;
-        const parentIdFormat = listItem.classList[0];
+        const parentId = listItem.classList[0];
         const content = listItem.querySelector("p").textContent;
         const isDone = listItem.querySelector("input").checked;
-        toDoListObject.priorityDownForListItem({content, parentIdFormat, isDone});
+        const itemId = listItem.id;
+        toDoListObject.priorityDownForListItem({content, isDone, parentId, itemId});
     }
 })

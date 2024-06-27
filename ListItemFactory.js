@@ -1,13 +1,14 @@
-const ListItem = (content, isDone, parentIdFormat)=>
+const ListItem = (content, isDone, parentId, id)=>
     {
         return {
             content,
             isDone,
-            parentIdFormat,
+            parentId,
+            id: id? id : `item${Date.now()}`,
             htmlCode()
             {
                 return `
-                    <li class="${parentIdFormat}"> 
+                    <li class="${parentId}" id="${this.id}"> 
                         <div class="body">
                             <input type="checkbox" ${this.addCheckedAttribute()}>
                             <p>${content}<p>
@@ -47,16 +48,15 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 let lists = db.lists;
                 const targetList = lists.find(list =>
                     {
-                        const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                        return listObject.convertTitleToDashedLowerCase() === parentIdFormat;
+                        return list.id === parentId;
                     }
                 );
     
                 const listItem = targetList.items.find(item => item.content === this.content);
                 if(listItem){return false};
                
-                targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});
-                db.status = {name: "AddingNewItem", effectedListId: this.parentIdFormat};  
+                targetList.items.push({content: this.content, isDone: this.isDone, parentId: this.parentId, id: this.id});
+                db.status = {name: "AddingNewItem", effectedListId: this.parentId};  
                 localStorage.setItem("db", JSON.stringify(db));
     
                 this.addToDom();
@@ -68,17 +68,16 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 let lists = db.lists;
                 let targetList = lists.find(list => 
                 {
-                    const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                    return list.id === this.parentId
                 });
                 targetList.items = targetList.items.filter(item => item.content !== this.content);
-                db.status = {name: "DeletingItem", effectedListId: this.parentIdFormat};
+                db.status = {name: "DeletingItem", effectedListId: this.parentId};
                 localStorage.setItem("db", JSON.stringify(db));
                 this.deleteListItemFromDom();
             },
             deleteListItemFromDom()
             {
-                const listItems = document.querySelectorAll(`.${this.parentIdFormat}`);
+                const listItems = document.querySelectorAll(`.${this.parentId}`);
                 for(let item of listItems)
                 {
                     if(item.querySelector(".body p").textContent === this.content)
@@ -93,15 +92,14 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 let lists = db.lists;
                 let targetList = lists.find(list => 
                 {
-                    const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat;
+                    return list.id === this.parentId;
                 });
                 let items = targetList.items;
                 let item = items.find(item => item.content === this.content);
                 item.isDone = this.isDone;
                 item.content = this.content;
-                item.parentIdFormat = this.parentIdFormat;
-                db.status = {name: "UpdatingItemData", effectedListId: this.parentIdFormat};
+                item.parentId = this.parentId;
+                db.status = {name: "UpdatingItemData", effectedListId: this.parentId};
                 localStorage.setItem("db", JSON.stringify(db));
             },
             priorityUp()
@@ -110,8 +108,7 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 let lists = db.lists;
                 let targetList = lists.find(list =>
                     {
-                        const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                        return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                        return list.id === this.parentId
                     }
                 );
     
@@ -122,11 +119,11 @@ const ListItem = (content, isDone, parentIdFormat)=>
                     // swap list-items in DB
                     targetList.items.splice(listItemIndex, 1);
                     targetList.items.splice(listItemIndex - 1, 0, listItem);
-                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentIdFormat};
+                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentId};
                     localStorage.setItem("db", JSON.stringify(db));
     
                     // rerender dom
-                    window.location.reload();
+                    this.updateListItemPositionInUI();
                 }
             },
             priorityDown()
@@ -135,8 +132,7 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 let lists = db.lists;
                 let targetList = lists.find(list =>
                     {
-                        const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                        return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                        return list.id === this.parentId
                     }
                 );
     
@@ -147,13 +143,29 @@ const ListItem = (content, isDone, parentIdFormat)=>
                     // swap list-items in DB
                     targetList.items.splice(listItemIndex, 1);
                     targetList.items.splice(listItemIndex + 1, 0, listItem);
-                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentIdFormat};
+                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentId};
                     localStorage.setItem("db", JSON.stringify(db));
 
                     // rerender dom
-                    window.location.reload();
+                    this.updateListItemPositionInUI();
                 }
             
+            },
+            updateListItemPositionInUI()
+            {
+                const targetList = JSON.parse(localStorage.getItem("db")).lists.find(list =>
+                    {
+                        return list.id == this.parentId
+                    }
+                )        
+                
+                for(let itemIndex = 0; itemIndex < targetList.items.length; itemIndex++)
+                {
+                    let item = targetList.items[itemIndex];
+                    let itemObject = ListItem(item.content, item.isDone, item.parentId, item.id);
+                    let itemLi = document.querySelector(`#${itemObject.id}`);
+                    itemLi.style.order = itemIndex;
+                }
             }
         }
     }

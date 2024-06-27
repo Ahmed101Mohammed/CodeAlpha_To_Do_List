@@ -1,10 +1,10 @@
-const ToDoList = (title, description, date, ...items) => {
+const ToDoList = (title, description, date, id, ...items) => {
     const convertListItemsToObjects = function(listItems)
     {
         let listItemsAsObjects = [];
         for(let item of listItems)
         {
-            let listItem = ListItem(item.content, item.isDone, item.parentIdFormat);
+            let listItem = ListItem(item.content, item.isDone, item.parentId, item.id);
             listItemsAsObjects.push(listItem);
         }
         return listItemsAsObjects;
@@ -32,12 +32,13 @@ const ToDoList = (title, description, date, ...items) => {
         description,
         date: date? new Date(date) : new Date(),
         items: getListItemsAsObjects(items),
+        id: id? id : `list${Date.now()}`,
         htmlCodeForCard () {
             return `
-            <div class="to-do-list-card" id="${this.convertTitleToDashedLowerCase()}">
+            <div class="to-do-list-card" id="${this.id}">
                     <div class="head">
                         <div class="info-header">
-                            <a href="to-do-list-page.html?listId=${this.convertTitleToDashedLowerCase()}"><h2 class="list-tilte">${this.title}</h2></a>
+                            <a href="to-do-list-page.html?listId=${this.id}"><h2 class="list-tilte">${this.title}</h2></a>
                             <p class="list-discription">${this.description}</p>
                         </div>
                         <span class="material-symbols-outlined delete">
@@ -83,7 +84,7 @@ const ToDoList = (title, description, date, ...items) => {
         addToDom()
         {
             const listsLinks = document.querySelector(".lists-links");
-            const newListLink = `<li class="list-link"><a href="#${this.convertTitleToDashedLowerCase()}">${this.title}</a></li>`;
+            const newListLink = `<li class="list-link"><a href="#${this.id}">${this.title}</a></li>`;
             listsLinks.insertAdjacentHTML("beforeend", newListLink);
             const listsContainer = document.querySelector(".lists-cards-container");
             listsContainer.insertAdjacentHTML("beforeend", this.htmlCodeForCard());
@@ -98,8 +99,8 @@ const ToDoList = (title, description, date, ...items) => {
                 return false;
             }
 
-            lists.push({title: this.title, description: this.description, date: this.date, items: this.items});
-            db.status = {name: "AddingNewList", effectedListId: this.convertTitleToDashedLowerCase()};
+            lists.push({title: this.title, description: this.description, date: this.date, id: this.id, items: this.items});
+            db.status = {name: "AddingNewList", effectedListId: this.id};
             localStorage.setItem("db", JSON.stringify(db));
             this.addToDom();
             return true;
@@ -111,13 +112,10 @@ const ToDoList = (title, description, date, ...items) => {
             const year = this.date.getFullYear();
             return `${day} ${months[month]} ${year}`
         },
-        convertTitleToDashedLowerCase () {
-            return this.title.toLowerCase().replace(/ /g, "-");
-        },
         addItemToDBAndDom(content, isDone)
         {
             // create item js object
-            const parentId = this.convertTitleToDashedLowerCase();
+            const parentId = this.id;
             let newListItem = ListItem(content, isDone, parentId);
             this.items.push(newListItem);
 
@@ -135,13 +133,13 @@ const ToDoList = (title, description, date, ...items) => {
         {
             let db = JSON.parse(localStorage.getItem("db"));
             db.lists = db.lists.filter(list => list.title !== this.title);
-            db.status = {name: "DeletingList", effectedListId: this.convertTitleToDashedLowerCase()};
+            db.status = {name: "DeletingList", effectedListId: this.id};
             localStorage.setItem("db", JSON.stringify(db));
 
-            const listCard = document.querySelector(`#${this.convertTitleToDashedLowerCase()}`);
+            const listCard = document.querySelector(`#${this.id}`);
             listCard.remove();
 
-            const listCardLink = document.querySelector(`a[href="#${this.convertTitleToDashedLowerCase()}"]`).parentNode;
+            const listCardLink = document.querySelector(`a[href="#${this.id}"]`).parentNode;
             listCardLink.remove();
         },
         isDoneItemsNumber()
@@ -172,12 +170,12 @@ const ToDoList = (title, description, date, ...items) => {
             this.items = this.items.filter(item => item.content !== listItem.content);
 
             // create ListItem object
-            const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentIdFormat);
+            const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentId, listItem.id);
             listItemObject.deleteFromDBAndDom();
         },
         updateListItemInDB(listItem)
         {
-            const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentIdFormat);
+            const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentId, listItem.id);
             listItemObject.updateInDB();
         },
         priorityUp()
@@ -191,11 +189,11 @@ const ToDoList = (title, description, date, ...items) => {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex - 1, 0, listObject);
-                db.status = {name: "UpdatingListPeriority", effectedListId: this.convertTitleToDashedLowerCase()};
+                db.status = {name: "UpdatingListPeriority", effectedListId: this.id};
                 localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
-                window.location.reload();
+                this.updateListCardPositionInUI()
             }
         },
         priorityDown()
@@ -209,26 +207,26 @@ const ToDoList = (title, description, date, ...items) => {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex + 1, 0, listObject);
-                db.status = {name: "UpdatingListPeriority", effectedListId: this.convertTitleToDashedLowerCase()};
+                db.status = {name: "UpdatingListPeriority", effectedListId: this.id};
                 localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
-                window.location.reload();
+                this.updateListCardPositionInUI()
             }
         },
         priorityUpForListItem(listItemData)
         {
-            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentIdFormat);
+            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentId, listItemData.id);
             listItemObject.priorityUp();
         },
         priorityDownForListItem(listItemData)
         {
-            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentIdFormat);
+            const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentId, listItemData.id);
             listItemObject.priorityDown();
         },
         updateProgressComponentLive()
         {
-            let progresUI = document.querySelector(`#${this.convertTitleToDashedLowerCase()} .progress`);
+            let progresUI = document.querySelector(`#${this.id} .progress`);
             let progressTextValue = progresUI.querySelector(".text-info span.progress-value")
             progressTextValue.textContent = `${this.isDoneItemsNumber()}/${this.items.length}`;
             let progressDone = progresUI.querySelector(".progress-bar .progress-done");
@@ -240,6 +238,19 @@ const ToDoList = (title, description, date, ...items) => {
             else
             {
                 progressDone.classList.remove("progress-done-green");
+            }
+        },
+        updateListCardPositionInUI()
+        {
+            const lists = JSON.parse(localStorage.getItem("db")).lists;
+            for(let listIndex = 0; listIndex < lists.length; listIndex++)
+            {
+                let list = lists[listIndex];
+                let listObject = ToDoList(list.title, list.description, list.date, list.id, ...list.items);
+                let listCard = document.querySelector(`#${listObject.id}`);
+                let listLink = document.querySelector(`a[href="#${listObject.id}"]`).parentNode;
+                listCard.style.order = listIndex;
+                listLink.style.order = listIndex;
             }
         }
     }
