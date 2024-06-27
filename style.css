@@ -51,7 +51,6 @@ aside .lists-links
 {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     overflow: auto;
     height: 100%;
 }

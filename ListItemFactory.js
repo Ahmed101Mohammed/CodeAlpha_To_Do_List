@@ -56,7 +56,7 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 if(listItem){return false};
                
                 targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});
-                db.status = "AddingNewItem"  
+                db.status = {name: "AddingNewItem", effectedListId: this.parentIdFormat};  
                 localStorage.setItem("db", JSON.stringify(db));
     
                 this.addToDom();
@@ -72,7 +72,7 @@ const ListItem = (content, isDone, parentIdFormat)=>
                     return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
                 });
                 targetList.items = targetList.items.filter(item => item.content !== this.content);
-                db.status = "DeletingItem";
+                db.status = {name: "DeletingItem", effectedListId: this.parentIdFormat};
                 localStorage.setItem("db", JSON.stringify(db));
                 this.deleteListItemFromDom();
             },
@@ -101,28 +101,28 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 item.isDone = this.isDone;
                 item.content = this.content;
                 item.parentIdFormat = this.parentIdFormat;
-                db.status = "UpdatingItemData";
+                db.status = {name: "UpdatingItemData", effectedListId: this.parentIdFormat};
                 localStorage.setItem("db", JSON.stringify(db));
             },
             priorityUp()
             {
                 let db = JSON.parse(localStorage.getItem("db"));
                 let lists = db.lists;
-                let listItems = lists.find(list =>
+                let targetList = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                         return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
                     }
                 );
     
-                const listItem = listItems.items.find(item => item.content === this.content);
-                const listItemIndex = listItems.items.indexOf(listItem);
+                const listItem = targetList.items.find(item => item.content === this.content);
+                const listItemIndex = targetList.items.indexOf(listItem);
                 if(listItemIndex > 0)
                 {
                     // swap list-items in DB
-                    listItems.items.splice(listItemIndex, 1);
-                    listItems.items.splice(listItemIndex - 1, 0, listItem);
-                    db.status = "UpdatingItemPeriority";
+                    targetList.items.splice(listItemIndex, 1);
+                    targetList.items.splice(listItemIndex - 1, 0, listItem);
+                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentIdFormat};
                     localStorage.setItem("db", JSON.stringify(db));
     
                     // rerender dom
@@ -133,21 +133,21 @@ const ListItem = (content, isDone, parentIdFormat)=>
             {
                 let db = JSON.parse(localStorage.getItem("db"));
                 let lists = db.lists;
-                let listItems = lists.find(list =>
+                let targetList = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                         return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
                     }
                 );
     
-                let listItem = listItems.items.find(item => item.content === this.content);
-                let listItemIndex = listItems.items.indexOf(listItem);
-                if(listItemIndex < listItems.items.length - 1)
+                let listItem = targetList.items.find(item => item.content === this.content);
+                let listItemIndex = targetList.items.indexOf(listItem);
+                if(listItemIndex < targetList.items.length - 1)
                 {
                     // swap list-items in DB
-                    listItems.items.splice(listItemIndex, 1);
-                    listItems.items.splice(listItemIndex + 1, 0, listItem);
-                    db.status = "UpdatingItemPeriority"
+                    targetList.items.splice(listItemIndex, 1);
+                    targetList.items.splice(listItemIndex + 1, 0, listItem);
+                    db.status = {name: "UpdatingItemPeriority", effectedListId: this.parentIdFormat};
                     localStorage.setItem("db", JSON.stringify(db));
 
                     // rerender dom

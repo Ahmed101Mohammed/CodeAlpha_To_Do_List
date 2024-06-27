@@ -99,7 +99,7 @@ const ToDoList = (title, description, date, ...items) => {
             }
 
             lists.push({title: this.title, description: this.description, date: this.date, items: this.items});
-            db.status = "AddingNewList";
+            db.status = {name: "AddingNewList", effectedListId: this.convertTitleToDashedLowerCase()};
             localStorage.setItem("db", JSON.stringify(db));
             this.addToDom();
             return true;
@@ -135,7 +135,7 @@ const ToDoList = (title, description, date, ...items) => {
         {
             let db = JSON.parse(localStorage.getItem("db"));
             db.lists = db.lists.filter(list => list.title !== this.title);
-            db.status = "DeletingList";
+            db.status = {name: "DeletingList", effectedListId: this.convertTitleToDashedLowerCase()};
             localStorage.setItem("db", JSON.stringify(db));
 
             const listCard = document.querySelector(`#${this.convertTitleToDashedLowerCase()}`);
@@ -191,7 +191,7 @@ const ToDoList = (title, description, date, ...items) => {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex - 1, 0, listObject);
-                db.status = "UpdatingListPeriority";
+                db.status = {name: "UpdatingListPeriority", effectedListId: this.convertTitleToDashedLowerCase()};
                 localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
@@ -209,7 +209,7 @@ const ToDoList = (title, description, date, ...items) => {
                 // swap lists on DB
                 lists.splice(listIndex, 1);
                 lists.splice(listIndex + 1, 0, listObject);
-                db.status = "UpdatingListPeriority";
+                db.status = {name: "UpdatingListPeriority", effectedListId: this.convertTitleToDashedLowerCase()};
                 localStorage.setItem("db", JSON.stringify(db));
 
                 // rerender dom
@@ -225,7 +225,22 @@ const ToDoList = (title, description, date, ...items) => {
         {
             const listItemObject = ListItem(listItemData.content, listItemData.isDone, listItemData.parentIdFormat);
             listItemObject.priorityDown();
+        },
+        updateProgressComponentLive()
+        {
+            let progresUI = document.querySelector(`#${this.convertTitleToDashedLowerCase()} .progress`);
+            let progressTextValue = progresUI.querySelector(".text-info span.progress-value")
+            progressTextValue.textContent = `${this.isDoneItemsNumber()}/${this.items.length}`;
+            let progressDone = progresUI.querySelector(".progress-bar .progress-done");
+            progressDone.style.width = `${this.progress_percentage()}%`;
+            if(this.progress_percentage() === 100)
+            {
+                progressDone.classList.add("progress-done-green");
+            }
+            else
+            {
+                progressDone.classList.remove("progress-done-green");
+            }
         }
-
     }
 }

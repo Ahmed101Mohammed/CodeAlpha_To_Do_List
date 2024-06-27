@@ -5,7 +5,7 @@ if(!localStorage.getItem("db"))
     console.log("DB created");
     localStorage.setItem("db", JSON.stringify({
         lists: [introductionAppToDoList],
-        status: "Ready"
+        status: {name: "Ready", effectedListId: ""}
     }));
 }
 
@@ -126,7 +126,7 @@ listsContainer.addEventListener("click", (event) => {
         const list = event.target.parentNode.parentNode.parentNode;
         const listId = list.id;
 
-        let targetlist = JSON.parse(localStorage.getItem("db")).list.find(list =>
+        let targetlist = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
                 const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                 return listObject.convertTitleToDashedLowerCase() == listId;
@@ -141,11 +141,19 @@ listsContainer.addEventListener("click", (event) => {
 addEventListener("storage", (event) => 
 {
     const dbStatus = JSON.parse(localStorage.getItem("db")).status;
-    if(dbStatus === "UpdatingItemData" ||
-        dbStatus === "DeletingItem" ||
-        dbStatus === "AddingNewItem"
+    if(dbStatus.name === "UpdatingItemData" ||
+        dbStatus.name === "DeletingItem" ||
+        dbStatus.name === "AddingNewItem"
     )
     {
-        window.location.reload();
+        const listId = dbStatus.effectedListId;
+        let targetList = JSON.parse(localStorage.getItem("db")).lists.find(list =>
+            {
+                const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
+                return listObject.convertTitleToDashedLowerCase() == listId;
+            }
+        )        
+        let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, ...targetList.items);
+        targetListObject.updateProgressComponentLive();
     }
 });
