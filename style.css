@@ -320,9 +320,9 @@ form .close
 {
     display: flex;
     justify-content: flex-end;
-    width: 100%;
-    cursor: pointer;
+    width: 100%;    
 }
+
 form span
 {
     color: var(--black-50);

@@ -16,11 +16,23 @@ addSign.addEventListener("click", () => {
     addNewListForm.style.display = "flex";
 })
 
-// event for close button
+// event for close add new list form
 const closeBtn = document.querySelector(".add-new-list-form .close");
-closeBtn.addEventListener("click", () => {
-    const addNewListForm = document.querySelector(".add-new-list-form");
-    addNewListForm.style.display = "none";
+closeBtn.addEventListener("click", (event) => {
+    if(event.target.classList.nodeName == "SPAN")
+    {
+        const addNewListForm = document.querySelector(".add-new-list-form");
+        addNewListForm.style.display = "none";
+    }
+})
+
+const addNewListFormContainer = document.querySelector(".add-new-list-form");
+addNewListFormContainer.addEventListener("click", (event) => {
+    if(event.target.classList.contains("add-new-list-form"))
+    {
+        const addNewListForm = document.querySelector(".add-new-list-form");
+        addNewListForm.style.display = "none";
+    }
 })
 
 // event for add button
