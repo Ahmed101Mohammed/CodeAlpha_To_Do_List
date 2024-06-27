@@ -16,6 +16,7 @@ aside
         display: none;
         position: fixed;
         width: 100%;
+        padding-top: 45px;
     }
 }
 

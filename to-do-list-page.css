@@ -153,16 +153,17 @@ li .body
     gap: 10px;
 }
 
-.checkbox input
+li input
 {
     min-width: 20px;
     min-height: 20px;
     accent-color: var(--red);
     cursor: pointer;
 }
+
 @media (max-width: 480px)
 {
-    .checkbox input
+    li input
     {
         min-width: 15px;
         min-height: 15px;
@@ -170,7 +171,7 @@ li .body
 
     li .body p
     {
-        font-size: 10px;
+        font-size: 12px;
     }
 }
 
