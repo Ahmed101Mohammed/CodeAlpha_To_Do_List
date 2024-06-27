@@ -1,4 +1,5 @@
-let introductionAppToDoList = {date: "2024-06-25T20:50:30.424Z",
+let introductionAppToDoList = {
+    title: "Discovering ToDoly application",
     description: "Checklists to check if you know all ToDoly features",
     items: [
         {content: 'Create a new list with any unique name. (Note: you can\'t create two lists with the same name)', isDone: false, parentIdFormat: 'discovering-todoly-application'}
@@ -17,4 +18,5 @@ let introductionAppToDoList = {date: "2024-06-25T20:50:30.424Z",
         ,
         {content: 'Delete "Discovering TODOly application" To Do List, now you are ready to use all ToDoly features.', isDone: false, parentIdFormat: 'discovering-todoly-application'}
     ],
-    title: "Discovering ToDoly application"}
+    date: Date.now()
+}
