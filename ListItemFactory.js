@@ -43,7 +43,8 @@ const ListItem = (content, isDone, parentIdFormat)=>
             },
             addListItemToDBAndDOM()
             {
-                const targetList = JSON.parse(localStorage.getItem("lists")).find(list =>
+                let lists = JSON.parse(localStorage.getItem("lists"));
+                const targetList = lists.find(list =>
                     {
                         const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
                         return listObject.convertTitleToDashedLowerCase() === parentIdFormat;
@@ -53,11 +54,8 @@ const ListItem = (content, isDone, parentIdFormat)=>
                 const listItem = targetList.items.find(item => item.content === this.content);
                 if(listItem){return false};
                
-                targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});
-                let newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== targetList.title);
-                newLists.push(targetList);
-    
-                localStorage.setItem("lists", JSON.stringify(newLists));
+                targetList.items.push({content: this.content, isDone: this.isDone, parentIdFormat: this.parentIdFormat});    
+                localStorage.setItem("lists", JSON.stringify(lists));
     
                 this.addToDom();
                 return true;
@@ -89,19 +87,20 @@ const ListItem = (content, isDone, parentIdFormat)=>
             },
             updateInDB()
             {
-                const targetList = JSON.parse(localStorage.getItem("lists")).find(list => 
+                const lists = JSON.parse(localStorage.getItem("lists"));
+                console.log({lists});
+                const targetList = lists.find(list => 
                 {
                     const listObject = ToDoList(list.title, list.description, list.date, ...list.items);
-                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat
+                    return listObject.convertTitleToDashedLowerCase() === this.parentIdFormat;
                 });
                 let items = targetList.items;
                 let item = items.find(item => item.content === this.content);
                 item.isDone = this.isDone;
                 item.content = this.content;
                 item.parentIdFormat = this.parentIdFormat;
-                let newLists = JSON.parse(localStorage.getItem("lists")).filter(list => list.title !== targetList.title);
-                newLists.push(targetList);
-                localStorage.setItem("lists", JSON.stringify(newLists));
+                console.log({lists});
+                localStorage.setItem("lists", JSON.stringify(lists));
             },
             priorityUp()
             {
