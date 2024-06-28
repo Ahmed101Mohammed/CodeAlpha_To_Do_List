@@ -41,16 +41,28 @@
         </aside>
         <main>
             <header>
-                <h1><a href="index.html">ToDoly</a></h1>
-                <p>To do list application for orgnizing, saving, and tracking tasks</p>
+                <div class="header-wrapper">
+                    <h1><a href="index.html">ToDoly</a></h1>
+                    <p>To do list application for orgnizing, saving, and tracking tasks</p>
+                </div>
+                <form action="" class="search">
+                    <label for="search">Search</label>
+                    <input id="search" type="text" name="search" placeholder="search for a list">
+                </form>
             </header>
             <section class="lists-cards-container">
                 <!-- Hnadle JS -->
-                 <button class="nav-btn">
-                    <span class="material-symbols-outlined">
-                        menu
-                    </span>
-                 </button>
+                <button class="nav-btn">
+                <span class="material-symbols-outlined">
+                    menu
+                </span>
+                </button>
+
+                <!-- There no lists -->
+                <div class="no-lists">
+                    <p>No lists yet</p>
+                    <p>Click on the + button to create new list</p>
+                </div>
             </section>
             <section class="add-new-list-form">
                 <form action="">

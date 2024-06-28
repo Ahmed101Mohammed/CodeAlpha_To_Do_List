@@ -7,6 +7,7 @@ aside
     flex-direction: column;
     gap: 38px;
     height: 100dvh;
+    z-index: 1;
 }
 
 @media (max-width: 700px)
@@ -104,8 +105,15 @@ aside a::before
 /* header */
 header
 {
-    padding: 29px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px 32px;
     background-color: var(--white);
+}
+
+header .header-wrapper
+{
     display: flex;
     flex-direction: column;
     gap: 10px
@@ -124,6 +132,37 @@ header p
     color: var(--black-50);
 }
 
+form.search
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+form.search input
+{
+    padding: 10px;
+    border: 2px var(--black-8) solid;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    width: 100%;
+}
+
+form.search button
+{
+    background-color: transparent;
+    border: none;
+    color: var(--black-10);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+form.search button:hover
+{
+    color: var(--black-50);
+}
 /* list cards container section */
 main
 {
@@ -148,6 +187,7 @@ main
     justify-content: center;   
     overflow-y: auto;
     height: auto;
+    position: relative;
 }
 
 .to-do-list-card
@@ -275,6 +315,7 @@ button.nav-btn
     background-color: transparent;
     cursor: pointer;
     display: none;
+    z-index: 2;
 }
 
 button.nav-btn:hover
@@ -288,6 +329,27 @@ button.nav-btn:hover
     {
         display: block;
     }
+}
+
+.no-lists
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.no-lists p
+{
+    color: var(--black-50);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
 }
 /* add-new-list-form section */
 .add-new-list-form
@@ -316,14 +378,14 @@ button.nav-btn:hover
     gap: 10px;
 }
 
-form .close
+.add-new-list-form form .close
 {
     display: flex;
     justify-content: flex-end;
     width: 100%;    
 }
 
-form span
+.add-new-list-form form span
 {
     color: var(--black-50);
     padding: 4px 8px;
@@ -335,12 +397,12 @@ form span
 
 }
 
-form span:hover
+.add-new-list-form form span:hover
 {
     color: var(--red);
 }
 
-form label
+.add-new-list-form form label
 {
     font-size: 14px;
     color: var(--black-50);
@@ -373,7 +435,7 @@ div.error-message-container p
     text-align: center;
 }
 
-form button
+.add-new-list-form form button
 {
     padding: 10px;
     border: none;

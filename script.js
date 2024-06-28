@@ -60,10 +60,12 @@ addBtn.addEventListener("click", (event) => {
         }
         else
         {
+            const isNoListsExists = document.querySelector(".no-lists");
+            if(isNoListsExists){noListsAppearance(false);}
             window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
             const addNewListForm = document.querySelector(".add-new-list-form");
             addNewListForm.style.display = "none";
-            temperoryMessage("New list added successfuly")
+            temperoryMessage("New list added successfuly");
         }
     }
     else
@@ -105,18 +107,42 @@ lestsContainer.addEventListener("click", (event) => {
         const isSuccess = targetListObject.deleteFromDBAndDom();
         if(isSuccess)
         {
-            temperoryMessage("List deleted successfuly")
+            temperoryMessage("List deleted successfuly");
+            const lists = listsContainer.querySelectorAll(".to-do-list-card");
+            if(lists.length === 0)
+            {
+                noListsAppearance(true);
+            }
         }
     }
 })
 
-// set predefined lists from local storage
-const lists = JSON.parse(localStorage.getItem("db")).lists;
-lists.forEach(list => {
-    let newList = ToDoList(list.title, list.description, list.date, list.id, ...list.items);
-    newList.addToDom();
-})
+// appearance of .no-lists element
+const noListsAppearance = (status) => {
+    const noListsElement = document.querySelector(".no-lists");
+    if(status)
+    {
+        noListsElement.style.display = "flex";
+    }
+    else
+    {
+        noListsElement.style.removeProperty("display");
+    }
+}
 
+// set predefined lists from local storage
+const initIndexPage = () => {
+    const lists = JSON.parse(localStorage.getItem("db")).lists;
+    lists.forEach(list => {
+        let newList = ToDoList(list.title, list.description, list.date, list.id, ...list.items);
+        newList.addToDom();
+    })
+    if(lists.length === 0)
+    {
+        noListsAppearance(true);
+    }
+}
+initIndexPage();
 // add click event for nav-btn
 const navBtns = document.querySelector(".nav-btn");
 navBtns.addEventListener("click", (event) => {
@@ -222,3 +248,51 @@ addEventListener("storage", (event) =>
         targetListObject.updateListInDom();
     }
 });
+
+// search for a list
+const searchInput = document.querySelector("form.search input");
+searchInput.addEventListener("input", ()=>
+{
+    let results = 0;
+    const value = searchInput.value;
+    const listsContainer = document.querySelector(".lists-cards-container");
+    const lists = listsContainer.querySelectorAll(".to-do-list-card");
+    lists.forEach(list => {
+        if(list.querySelector("h2").textContent.toLowerCase().startsWith(value.toLowerCase()))
+        {
+            results += 1;
+            noListsAppearance(false);
+            list.style.display = "flex";
+            if(value !== "")
+            {
+                list.querySelector(".up-down").style.display = "none";
+            }
+            else
+            {
+                list.querySelector(".up-down").style.removeProperty("display");
+            }
+        }
+        else
+        {
+            list.style.display = "none";
+        }
+    })
+
+    const listsLinksContainer = document.querySelector(".lists-links");
+    const listsLinks = listsLinksContainer.querySelectorAll(".list-link");
+    listsLinks.forEach(listLink => {
+        if(listLink.querySelector("a").textContent.toLowerCase().startsWith(value.toLowerCase()))
+        {
+            listLink.style.display = "flex";
+        }
+        else
+        {
+            listLink.style.display = "none";
+        }
+    })
+
+    if(results === 0)
+    {
+        noListsAppearance(true);
+    }
+})
