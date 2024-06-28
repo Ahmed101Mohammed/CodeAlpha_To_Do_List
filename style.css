@@ -358,6 +358,21 @@ form input
     font-weight: 600;
 }
 
+div.error-message-container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.error-message-container p
+{
+    color: var(--red);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
 form button
 {
     padding: 10px;

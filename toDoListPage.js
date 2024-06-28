@@ -27,14 +27,34 @@ toDoListObject.setInToDoListPageDOM();
 const addNewListItem = document.querySelector("form button");
 addNewListItem.addEventListener("click", (event) => {
     event.preventDefault();
+    let errorMessageElement = document.querySelector(".error-message-container .error-message");
     const content = document.querySelector("form input").value;
     if(content)
     {
-        toDoListObject.addItemToDBAndDom(content, false);
-        document.querySelector("form input").value = "";
+        const isSuccess = toDoListObject.addItemToDBAndDom(content, false)
+        if(!isSuccess)
+        {
+            errorMessageElement.textContent = "List item with this content already exists, please choose another one";
+        }
+        else
+        {
+            errorMessageElement.textContent = "";
+            document.querySelector("form input").value = "";
+        }
+    }
+    else
+    {
+        errorMessageElement.textContent = "Please enter content";
     }
 })
 
+// add event to clear error message in the input is in onchange
+const input = document.querySelector("form input");
+input.addEventListener("input", ()=>
+{
+    let errorMessageElement = document.querySelector(".error-message-container .error-message");
+    errorMessageElement.textContent = "";
+})
 // add event for delete button
 const listItemsContainer = document.querySelector("ul");
 listItemsContainer.addEventListener("click", (event) => {
@@ -87,3 +107,23 @@ listItemsContainer.addEventListener("click", (event) => {
         toDoListObject.priorityDownForListItem({content, isDone, parentId, id});
     }
 })
+
+// add event for storage change
+addEventListener("storage", (event) => 
+{
+    const dbStatus = JSON.parse(localStorage.getItem("db")).status;
+    const listId = dbStatus.effectedListId;
+
+    if(dbStatus.name === "DeletingItem" ||
+        dbStatus.name === "AddingNewItem" ||
+        dbStatus.name === "UpdatingItemData" ||
+        dbStatus.name === "UpdatingItemPeriority"
+    )
+    {
+        const listItemsContainer = document.querySelector("main ul");
+        listItemsContainer.innerHTML = "";
+        const targetList = JSON.parse(localStorage.getItem("db")).lists.find(list => list.id === listId);
+        const targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, targetList.id, ...targetList.items);
+        targetListObject.addItemsToDom();
+    }
+});

@@ -117,10 +117,13 @@ const ToDoList = (title, description, date, id, ...items) => {
             // create item js object
             const parentId = this.id;
             let newListItem = ListItem(content, isDone, parentId);
-            this.items.push(newListItem);
 
             // Modify the List in the db and dom
-            newListItem.addListItemToDBAndDOM();
+            const isSuccess = newListItem.addListItemToDBAndDOM();
+
+            if(isSuccess){this.items.push(newListItem)}
+            
+            return isSuccess;
         }, 
         addItemsToDom()
         {
@@ -141,6 +144,7 @@ const ToDoList = (title, description, date, id, ...items) => {
 
             const listCardLink = document.querySelector(`a[href="#${this.id}"]`).parentNode;
             listCardLink.remove();
+            return true;
         },
         isDoneItemsNumber()
         {

@@ -29,16 +29,26 @@
     </head>
     <body>
         <header>
-            <h1><a href="index.html">ToDoly</a></h1>
-            <h2 class="list-title">to do list title</h2>
-            <p class="list-description">to do list description</p>
+            <div class="header-wrapper">
+                <h1><a href="index.html">ToDoly</a></h1>
+                <h2 class="list-title">to do list title</h2>
+                <p class="list-description">to do list description</p>
+            </div>
         </header>
         <main>
             <form action="">
-                <label for="task-content">task</label>
-                <input id="task-content" type="text" name="task" placeholder="add task">
-                <button type="submit">add</button>
+                <div class="main-form-body">
+                    <label for="task-content">task</label>
+                    <input id="task-content" type="text" name="task" placeholder="add task">
+                    <button type="submit">add</button>
+                </div>
+                <div class="error-message-container">
+                    <p class="error-message">
+                        <!-- Hnadle JS -->
+                    </p>
+                </div>
             </form>
+            
             <ul>
                 <!-- Hnadle JS -->
             </ul>

@@ -8,11 +8,19 @@ body
 /* header */
 header
 {
+    width: 100%;
+    background-color: var(--white);
+}
+
+header .header-wrapper
+{
     padding: 32px 28px;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
     gap: 6px;
+    max-width:  1024px;
+    margin: 0 auto;
 }
 
 header h1
@@ -86,6 +94,19 @@ main
 
 main form
 {
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    color: var(--black);
+    gap: 5px;
+}
+
+main .main-form-body
+{
     width: 100%;
     display: flex;
     gap: 10px;
@@ -145,6 +166,22 @@ main form button
     border-radius: 5px;
     cursor: pointer;
 }
+
+div.error-message-container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.error-message-container p
+{
+    color: var(--red);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
 
 main ul
 {

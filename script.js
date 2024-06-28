@@ -12,18 +12,22 @@ if(!localStorage.getItem("db"))
 // evenr for plus sign to create new to-do-list
 const addSign = document.querySelector("aside .material-symbols-outlined");
 addSign.addEventListener("click", () => {
+    const titleInput = document.querySelector(".add-new-list-form input[name='title']");
+    const descriptionInput = document.querySelector(".add-new-list-form input[name='description']");
+    const errorMessageElement = document.querySelector(".add-new-list-form .error-message");
+    titleInput.value = "";
+    descriptionInput.value = "";
+    errorMessageElement.textContent = "";
+    
     const addNewListForm = document.querySelector(".add-new-list-form");
     addNewListForm.style.display = "flex";
 })
 
 // event for close add new list form
-const closeBtn = document.querySelector(".add-new-list-form .close");
-closeBtn.addEventListener("click", (event) => {
-    if(event.target.classList.nodeName == "SPAN")
-    {
-        const addNewListForm = document.querySelector(".add-new-list-form");
-        addNewListForm.style.display = "none";
-    }
+const closeBtn = document.querySelector(".add-new-list-form .close span");
+closeBtn.addEventListener("click", () => {
+    const addNewListForm = document.querySelector(".add-new-list-form");
+    addNewListForm.style.display = "none";
 })
 
 const addNewListFormContainer = document.querySelector(".add-new-list-form");
@@ -43,20 +47,45 @@ addBtn.addEventListener("click", (event) => {
     const descriptionInput = document.querySelector(".add-new-list-form input[name='description']");
     const title = titleInput.value;
     const description = descriptionInput.value;
-
+    const errorMessageElement = document.querySelector(".add-new-list-form .error-message");
     if(title && description) 
     {
         const list = ToDoList(title, description);
-        list.addToDoListToDBAndDOM();
-        window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
+        errorMessageElement.textContent = "";
+        const isSuccess = list.addToDoListToDBAndDOM();
+        
+        if(!isSuccess)
+        {
+            errorMessageElement.textContent = "List with this title already exists, please choose another one";
+        }
+        else
+        {
+            window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
+            const addNewListForm = document.querySelector(".add-new-list-form");
+            addNewListForm.style.display = "none";
+            temperoryMessage("New list added successfuly")
+        }
     }
-
-    titleInput.value = "";
-    descriptionInput.value = "";
-    const addNewListForm = document.querySelector(".add-new-list-form");
-    addNewListForm.style.display = "none";
+    else
+    {
+        errorMessageElement.textContent = "Please enter title and description";
+    }
 })
 
+// clear error message if the user make any input
+const titleInput = document.querySelector(".add-new-list-form input[name='title']");
+const descriptionInput = document.querySelector(".add-new-list-form input[name='description']");
+titleInput.addEventListener("input", ()=>
+{
+    const errorMessageElement = document.querySelector(".add-new-list-form .error-message");
+    errorMessageElement.textContent = "";
+})
+
+descriptionInput.addEventListener("input", ()=>
+{
+    const errorMessageElement = document.querySelector(".add-new-list-form .error-message");
+    errorMessageElement.textContent = "";
+})
 
 // event for delete button
 const lestsContainer = document.querySelector(".lists-cards-container");
@@ -73,7 +102,11 @@ lestsContainer.addEventListener("click", (event) => {
         )
 
         let targetListObject = ToDoList(targetlist.title, targetlist.description, targetlist.date, targetlist.id, ...targetlist.items);
-        targetListObject.deleteFromDBAndDom();
+        const isSuccess = targetListObject.deleteFromDBAndDom();
+        if(isSuccess)
+        {
+            temperoryMessage("List deleted successfuly")
+        }
     }
 })
 
@@ -150,12 +183,12 @@ listsContainer.addEventListener("click", (event) => {
 addEventListener("storage", (event) => 
 {
     const dbStatus = JSON.parse(localStorage.getItem("db")).status;
+    const listId = dbStatus.effectedListId;
     if(dbStatus.name === "UpdatingItemData" ||
         dbStatus.name === "DeletingItem" ||
         dbStatus.name === "AddingNewItem"
     )
     {
-        const listId = dbStatus.effectedListId;
         let targetList = JSON.parse(localStorage.getItem("db")).lists.find(list =>
             {
                 return list.id == listId;
@@ -163,5 +196,19 @@ addEventListener("storage", (event) =>
         )        
         let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, targetList.id, ...targetList.items);
         targetListObject.updateProgressComponentLive();
+    }
+    else if (dbStatus.name === "DeletingList")
+    {
+        temperoryMessage("List deleted successfuly")
+
+        const listCard = document.querySelector(`#${listId}`);
+        listCard.remove();
+    }
+    else if(dbStatus.name === "AddingNewList")
+    {
+        temperoryMessage("New list added successfuly");
+        const addedList = JSON.parse(localStorage.getItem("db")).lists.find(list => list.id === listId);
+        let addedListObject = ToDoList(addedList.title, addedList.description, addedList.date, addedList.id, ...addedList.items);
+        addedListObject.addToDom();
     }
 });

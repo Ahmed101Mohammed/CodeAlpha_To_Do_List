@@ -12,3 +12,27 @@
 {
     text-decoration: line-through;
 }
+
+.timly-error-style
+{
+    width: fit-content;
+    color: var(--white);
+    background-color: var(--red);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 1px 1px 1px var(--black-50);
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timly-error-content-style
+{
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+}
