@@ -17,9 +17,23 @@ header
 
 header h1
 {
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
+    color: var(--black-50);
+    padding-bottom: 10px;
+    border-bottom: 1px var(--black-10) solid;
+}
+
+header h1:hover
+{
     color: var(--black);
+}
+
+header h2
+{
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--black)
 }
 
 @media (max-width: 700px)
@@ -28,7 +42,7 @@ header h1
     {
         padding: 16px 14px;
     }
-    header h1
+    header h2
     {
         font-size: 20px;
     }    

@@ -157,9 +157,9 @@ const ToDoList = (title, description, date, id, ...items) => {
         },
         setInToDoListPageDOM()
         {
-            const pageTitle = document.querySelector("h1");
+            const pageTitle = document.querySelector(".list-title");
             pageTitle.textContent = this.title;
-            const descriptionElement = document.querySelector("header p");
+            const descriptionElement = document.querySelector(".list-description");
             descriptionElement.textContent = this.description;
 
             this.addItemsToDom();
