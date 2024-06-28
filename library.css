@@ -36,3 +36,8 @@
     text-align: center;
     font-size: 14px;
 }
+
+.editable-element
+{
+    border: 1px var(--black-10) solid !important;
+}

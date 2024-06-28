@@ -127,3 +127,117 @@ addEventListener("storage", (event) =>
         targetListObject.addItemsToDom();
     }
 });
+
+// add event for editing listItem
+let previousListItemContent = "";
+listItemsContainer.addEventListener("click", (event) => 
+{
+    if(event.target.nodeName == "P")
+    {
+        let listConentElement = event.target;
+        previousListItemContent = listConentElement.textContent;
+        listConentElement.setAttribute("contenteditable", "true");
+        listConentElement.focus();
+        listConentElement.classList.add("editable-element")
+    }
+})
+
+listItemsContainer.addEventListener("focusout", (event) => 
+{
+    if(event.target.nodeName == "P")
+    {
+        let listConentElement = event.target;
+        let currentListItemContent = listConentElement.textContent;
+        listConentElement.setAttribute("contenteditable", "false");
+        listConentElement.classList.remove("editable-element")
+
+        if(currentListItemContent === previousListItemContent)
+        {
+            return;
+        }
+        // change in db
+        let listItem = listConentElement.parentNode.parentNode;
+        const parentId = listItem.classList[0];
+        const content = listConentElement.textContent;
+        const isDone = listItem.querySelector("input").checked;
+        const id = listItem.id;
+        const isSuccess = toDoListObject.updateListItemInDB({content, isDone, parentId, id});
+
+        if(!isSuccess)
+        {
+            listConentElement.textContent = previousListItemContent;
+        }
+    }
+})
+
+// add event for editing description
+const descriptionContainer = document.querySelector("header .list-description");
+const previousDescription = descriptionContainer.textContent;
+descriptionContainer.addEventListener("click", (event) => 
+{
+    let descriptionElement = event.target;
+    descriptionElement.setAttribute("contenteditable", "true");
+    descriptionElement.focus();
+    descriptionElement.classList.add("editable-element")
+})
+
+descriptionContainer.addEventListener("focusout", (event) => 
+{
+    let descriptionElement = event.target;
+    descriptionElement.setAttribute("contenteditable", "false");
+    descriptionElement.classList.remove("editable-element")
+    const currentDescription = descriptionContainer.textContent;
+    if(currentDescription === previousDescription)
+    {
+        return;
+    }
+    // change in db
+    toDoListObject.description = descriptionElement.textContent;
+    const isSuccess = toDoListObject.updateListInDB();
+
+    if(isSuccess)
+    {
+       temperoryMessage("List description updated successfuly");
+    }
+    else
+    {
+        temperoryMessage("List description updated failed: may due to empty description");
+        descriptionContainer.textContent = previousDescription;
+    } 
+})
+
+// add event for editing title
+const titleContainer = document.querySelector("header .list-title");
+const previousTitle = titleContainer.textContent;
+titleContainer.addEventListener("click", (event) => 
+{
+    let titleElement = event.target;
+    titleElement.setAttribute("contenteditable", "true");
+    titleElement.focus();
+    titleElement.classList.add("editable-element")
+})
+
+titleContainer.addEventListener("focusout", (event) => 
+{
+    let titleElement = event.target;
+    titleElement.setAttribute("contenteditable", "false");
+    titleElement.classList.remove("editable-element")
+    const currentTitle = titleContainer.textContent;
+    if(currentTitle === previousTitle)
+    {
+        return;
+    }
+    // change in db
+    toDoListObject.title = titleElement.textContent;
+    const isSuccess = toDoListObject.updateListInDB();
+
+    if(isSuccess)
+    {
+       temperoryMessage("List title updated successfuly");
+    }
+    else
+    {
+        temperoryMessage("List title updated failed: may due to empty title or duplicate title");
+        titleContainer.textContent = previousTitle;
+    } 
+})

@@ -38,8 +38,8 @@ const ToDoList = (title, description, date, id, ...items) => {
             <div class="to-do-list-card" id="${this.id}">
                     <div class="head">
                         <div class="info-header">
-                            <a href="to-do-list-page.html?listId=${this.id}"><h2 class="list-tilte">${this.title}</h2></a>
-                            <p class="list-discription">${this.description}</p>
+                            <a href="to-do-list-page.html?listId=${this.id}"><h2 class="list-title">${this.title}</h2></a>
+                            <p class="list-description">${this.description}</p>
                         </div>
                         <span class="material-symbols-outlined delete">
                             delete
@@ -180,7 +180,7 @@ const ToDoList = (title, description, date, id, ...items) => {
         updateListItemInDB(listItem)
         {
             const listItemObject = ListItem(listItem.content, listItem.isDone, listItem.parentId, listItem.id);
-            listItemObject.updateInDB();
+            return listItemObject.updateInDB();
         },
         priorityUp()
         {
@@ -256,6 +256,45 @@ const ToDoList = (title, description, date, id, ...items) => {
                 listCard.style.order = listIndex;
                 listLink.style.order = listIndex;
             }
+        },
+        updateListInDB()
+        {
+            if(this.validDescription() && this.validTitle())
+            {
+                const db = JSON.parse(localStorage.getItem("db"));
+                const targetList = db.lists.find(list => list.id === this.id);
+                targetList.title = this.title;
+                targetList.description = this.description;
+                targetList.date = this.date;
+                db.status = {name: "UpdatingList", effectedListId: this.id};
+                localStorage.setItem("db", JSON.stringify(db));
+                return true;
+            }
+            return false;
+        },
+        updateListInDom()
+        {
+            const listCard = document.querySelector(`#${this.id}`);
+            listCard.querySelector(".list-title").textContent = this.title;
+            listCard.querySelector(".list-description").textContent = this.description;
+            this.updateProgressComponentLive();
+        },
+        validTitle()
+        {
+            if(this.title === "")
+            {
+                return false;
+            }
+            return true;
+        },
+        validDescription()
+        {
+            const listWithSameTitle = JSON.parse(localStorage.getItem("db")).lists.find(list => list.title === this.title);
+            if(this.description === "" || (listWithSameTitle && listWithSameTitle.id !== this.id))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

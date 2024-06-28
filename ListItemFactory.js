@@ -11,7 +11,7 @@ const ListItem = (content, isDone, parentId, id)=>
                     <li class="${parentId} ${this.isDone? "done-list-item" : ""}" id="${this.id}"> 
                         <div class="body">
                             <input type="checkbox" ${this.addCheckedAttribute()}>
-                            <p>${content}<p>
+                            <p spellcheck="false">${content}<p>
                         </div> 
                         <div class="sittings">
                             <div class="up-down">
@@ -106,35 +106,45 @@ const ListItem = (content, isDone, parentId, id)=>
                     return list.id === this.parentId;
                 });
                 let items = targetList.items;
-                let item = items.find(item => item.content === this.content);
+                let item = items.find(item => item.id === this.id);
+                let previousIsDoneStatus = item.isDone;
                 item.isDone = this.isDone;
-                item.content = this.content;
                 
-                items = items.filter(item => item.content !== this.content);
-                if(item.isDone)
+                if(!this.isValidContent())
                 {
-                    items.push(item);
-                    targetList.items = items;
+                    return false;
                 }
-                else
+                item.content = this.content;
+
+                if(previousIsDoneStatus !== this.isDone)
                 {
-                    // first done item index 
-                    const firstDoneItemIndex = items.findIndex(item => item.isDone);
-                        
-                    if(firstDoneItemIndex === -1)
+                    items = items.filter(item => item.content !== this.content);
+                    if(item.isDone)
                     {
                         items.push(item);
+                        targetList.items = items;
                     }
                     else
                     {
-                        items.splice(firstDoneItemIndex, 0, item);
+                        // first done item index 
+                        const firstDoneItemIndex = items.findIndex(item => item.isDone);
+                            
+                        if(firstDoneItemIndex === -1)
+                        {
+                            items.push(item);
+                        }
+                        else
+                        {
+                            items.splice(firstDoneItemIndex, 0, item);
+                        }
+                        targetList.items = items;
                     }
-                    targetList.items = items;
                 }
                 db.status = {name: "UpdatingItemData", effectedListId: this.parentId};
                 localStorage.setItem("db", JSON.stringify(db));
                 this.updateUIForDoneItem();
                 this.updateListItemPositionInUI();
+                return true;
             },
             priorityUp()
             {
@@ -224,6 +234,26 @@ const ListItem = (content, isDone, parentId, id)=>
                 {
                     listItem.classList.remove("done-list-item");
                 }
+            },
+            isValidContent()
+            {
+                // check if content is dublicated for the same parent list
+                let db = JSON.parse(localStorage.getItem("db"));
+                let lists = db.lists;
+                let targetList = lists.find(list =>
+                    {
+                        return list.id === this.parentId
+                    }
+                );
+                let items = targetList.items;
+                let item = items.find(item => item.content === this.content);
+
+                // check if content is empty
+                if(this.content === "" || (item && item.id !== this.id))
+                {
+                    return false;
+                }
+                return true;
             }
         }
     }

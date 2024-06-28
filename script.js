@@ -211,4 +211,14 @@ addEventListener("storage", (event) =>
         let addedListObject = ToDoList(addedList.title, addedList.description, addedList.date, addedList.id, ...addedList.items);
         addedListObject.addToDom();
     }
+    else if(dbStatus.name === "UpdatingList")
+    {
+        const targetList = JSON.parse(localStorage.getItem("db")).lists.find(list =>
+            {
+                return list.id == listId;
+            }
+        )        
+        let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, targetList.id, ...targetList.items);
+        targetListObject.updateListInDom();
+    }
 });
