@@ -48,6 +48,7 @@ addBtn.addEventListener("click", (event) => {
     const title = titleInput.value;
     const description = descriptionInput.value;
     const errorMessageElement = document.querySelector(".add-new-list-form .error-message");
+    const addingTasksDirectlyStatus = document.querySelector(".add-new-list-form .adding-tasks-directly input").checked;
     if(title && description) 
     {
         const list = ToDoList(title, description);
@@ -62,7 +63,10 @@ addBtn.addEventListener("click", (event) => {
         {
             const isNoListsExists = document.querySelector(".no-lists");
             if(isNoListsExists){noListsAppearance(false);}
-            window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
+            if(addingTasksDirectlyStatus)
+            {
+                window.open(`to-do-list-page.html?listId=${list.id}`, "_blank");
+            }
             const addNewListForm = document.querySelector(".add-new-list-form");
             addNewListForm.style.display = "none";
             temperoryMessage("New list added successfuly");

@@ -420,6 +420,33 @@ form input
     font-weight: 600;
 }
 
+.adding-tasks-directly
+{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.adding-tasks-directly label
+{
+    font-size: 14px;
+    color: var(--black-50);
+    font-weight: 600;
+    order: 1;
+}
+
+.adding-tasks-directly input
+{
+    order: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    border: 2px var(--black-8) solid;
+    border-radius: 5px;
+    outline: none;
+    accent-color: var(--red);
+}
+
 div.error-message-container
 {
     display: flex;
