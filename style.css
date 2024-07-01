@@ -190,6 +190,19 @@ main
     position: relative;
 }
 
+.psodu-card
+{
+    display: block;
+    width: 320px;
+    height: 190.8px;
+    background-color: var(--white);
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border: 1px var(--black-10) dashed;
+}
+
 .to-do-list-card
 {
     padding: 20px;
@@ -201,6 +214,7 @@ main
     display: flex;
     flex-direction: column;
     gap: 21px;
+    cursor: grab;
 }
 
 .to-do-list-card .head

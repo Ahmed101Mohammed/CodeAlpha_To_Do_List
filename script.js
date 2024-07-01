@@ -300,3 +300,122 @@ searchInput.addEventListener("input", ()=>
         noListsAppearance(true);
     }
 })
+
+// Scan for lists and reorder in DB
+const scanListsAndReorder = () => {
+    const lists = JSON.parse(localStorage.getItem("db")).lists;
+    const listsCards = listsContainer.querySelectorAll(".to-do-list-card");
+    let newLists = [];
+    for(let i = 0; i < listsCards.length; i++)
+    {
+        const listId = listsCards[i].id;
+        const list = lists.find(list => list.id === listId);
+        if(list){newLists.push(list);}
+    }
+    if(newLists.length > 0)
+    {
+        localStorage.setItem("db", JSON.stringify({status: {name: "Ready", effectedListId: ""}, lists: newLists}));
+    }
+}
+
+// remove all lists cards
+const removeAllLists = () => {
+    const listsContainer = document.querySelector(".lists-cards-container");
+    const lists = listsContainer.querySelectorAll(".to-do-list-card");
+    lists.forEach(list => {
+        list.remove();
+    })
+}
+
+// draging lap
+    // helpers
+const getParentWithThisClass = (element, className) => {
+    let parent = element.parentElement;
+    while(parent)
+    {
+        if(parent.classList.contains(className))
+        {
+            return parent;
+        }
+        parent = parent.parentElement;
+    }
+    return false;
+}
+
+let globalId = "";
+let dragedList;
+listsContainer.addEventListener("dragstart", (event) => {
+    if(event.target.classList.contains("to-do-list-card"))
+    {
+        dragedList = event.target;
+        console.log("I start")
+        globalId = event.target.id;
+        event.target.classList.add("hide-draggable");
+    }
+})
+
+listsContainer.addEventListener("dragover", (event) => {
+    if(dragedList.style.position !== "absolute")
+    {
+        dragedList.style.position = "absolute";
+    }
+    const psudoCard = `
+                        <div class="psodu-card">
+
+                        </div>
+                        `
+    // Get the current mouse position
+    const mouseX = window.event.clientX;
+    const mouseY = window.event.clientY;
+
+    // Use elementFromPoint to get the element at the mouse position
+    const element = document.elementFromPoint(mouseX, mouseY);
+    const parent = getParentWithThisClass(element, "to-do-list-card");
+    if(parent && parent.id !== globalId)
+    {
+        const parentDimentions = parent.getBoundingClientRect();
+        const middle = parentDimentions.left + parentDimentions.width / 2;
+        if(mouseX < middle)
+        {   
+            if (!parent.previousElementSibling  || !parent.previousElementSibling.classList.contains("psodu-card"))
+            {
+                if(document.querySelector(".psodu-card"))
+                {
+                    document.querySelector(".psodu-card").remove();
+                }
+                parent.insertAdjacentHTML("beforebegin", psudoCard);
+            }
+        }
+        else
+        {
+            if(!parent.nextElementSibling || !parent.nextElementSibling.classList.contains("psodu-card"))
+            {
+                if(document.querySelector(".psodu-card"))
+                {
+                    document.querySelector(".psodu-card").remove();
+                }
+                parent.insertAdjacentHTML("afterend", psudoCard);    
+            }
+            
+        }
+
+    }
+})
+
+listsContainer.addEventListener("dragend", (event) => {
+    console.log("I end")
+    const psudoCard = document.querySelector(".psodu-card");
+    const realCard = document.querySelector(`#${globalId}`);
+    realCard.classList.remove("hide-draggable");
+    dragedList.style.removeProperty("position");
+    if(psudoCard && realCard)
+    {
+        psudoCard.insertAdjacentElement("afterend", realCard);
+        psudoCard.remove();
+        scanListsAndReorder();
+        removeAllLists();
+        const listsLinksContainer = document.querySelector(".lists-links");
+        listsLinksContainer.innerHTML = "";
+        initIndexPage()
+    }
+})

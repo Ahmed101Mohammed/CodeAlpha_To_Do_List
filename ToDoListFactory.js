@@ -35,7 +35,7 @@ const ToDoList = (title, description, date, id, ...items) => {
         id: id? id : `list${Date.now()}`,
         htmlCodeForCard () {
             return `
-            <div class="to-do-list-card" id="${this.id}">
+            <div class="to-do-list-card" id="${this.id}" draggable="true">
                     <div class="head">
                         <div class="info-header">
                             <a href="to-do-list-page.html?listId=${this.id}"><h2 class="list-title">${this.title}</h2></a>

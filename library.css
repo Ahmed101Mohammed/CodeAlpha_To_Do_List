@@ -41,3 +41,9 @@
 {
     border: 1px var(--black-10) solid !important;
 }
+
+.hide-draggable 
+{
+    transition: 0.01s;
+    transform: translateX(-9999px);
+}
