@@ -330,7 +330,7 @@ const removeAllLists = () => {
 // draging lap
     // helpers
 const getParentWithThisClass = (element, className) => {
-    let parent = element.parentElement;
+    let parent = element;
     while(parent)
     {
         if(parent.classList.contains(className))
@@ -348,7 +348,6 @@ listsContainer.addEventListener("dragstart", (event) => {
     if(event.target.classList.contains("to-do-list-card"))
     {
         dragedList = event.target;
-        console.log("I start")
         globalId = event.target.id;
         event.target.classList.add("hide-draggable");
     }
@@ -403,7 +402,6 @@ listsContainer.addEventListener("dragover", (event) => {
 })
 
 listsContainer.addEventListener("dragend", (event) => {
-    console.log("I end")
     const psudoCard = document.querySelector(".psodu-card");
     const realCard = document.querySelector(`#${globalId}`);
     realCard.classList.remove("hide-draggable");

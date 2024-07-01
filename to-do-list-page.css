@@ -196,6 +196,18 @@ main ul
     width: 100%;
 }
 
+.psodu-item
+{
+    display: block;
+    height: 50px;
+    background-color: var(--white);
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border: 1px var(--black-10) dashed;
+}
+
 main ul li
 {
     padding: 10px;
@@ -208,6 +220,7 @@ main ul li
     font-weight: 600;
     font-size: 14px;
     gap: 2px;
+    cursor: grab;
 }
 
 li .body

@@ -19,9 +19,21 @@ if(!toDoList)
 {
     window.location.href = "index.html";
 }
-
-let toDoListObject = ToDoList(toDoList.title, toDoList.description, toDoList.date, toDoList.id, ...toDoList.items);
-toDoListObject.setInToDoListPageDOM();
+let toDoListObject;
+const initPage = ()=>
+{
+    const toDoList = JSON.parse(localStorage.getItem("db")).lists.find(list => 
+        {
+            return (list.id === listId);
+        });
+    if(!toDoList)
+    {
+        window.location.href = "index.html";
+    }
+    toDoListObject = ToDoList(toDoList.title, toDoList.description, toDoList.date, toDoList.id, ...toDoList.items);
+    toDoListObject.setInToDoListPageDOM();
+}    
+initPage();
 
 // add event for addig new list item to db and dom
 const addNewListItem = document.querySelector("form button");
@@ -240,4 +252,157 @@ titleContainer.addEventListener("focusout", (event) =>
         temperoryMessage("List title updated failed: may due to empty title or duplicate title");
         titleContainer.textContent = previousTitle;
     } 
+})
+
+// Scan for items and reorder in DB
+const scanItemsAndReorder = () => {
+    let db = JSON.parse(localStorage.getItem("db"));
+    let lists = db.lists;
+    let targetList = lists.find(list => list.id === listId);
+    let items = targetList.items;
+    let itemsUI = document.querySelector("ul.items").querySelectorAll(".item");
+    let newItems = [];
+    for(let i = 0; i < itemsUI.length; i++)
+    {
+        const itemId = itemsUI[i].id;
+        const item = items.find(item => item.id === itemId);
+        if(item){newItems.push(item);}
+    }
+    if(newItems.length > 0)
+    {
+        targetList.items = newItems;
+        localStorage.setItem("db", JSON.stringify(db));
+    }
+}
+
+// remove all items
+const removeAllItems = () => {
+    let itemsContainer = document.querySelector("ul.items");
+    const itmes = itemsContainer.querySelectorAll(".item");
+    itmes.forEach(item => {
+        item.remove();
+    })
+}
+
+// is accepted items order
+const isAcceptedItemsOrder = () => 
+{
+    const items = document.querySelector("ul.items").querySelectorAll(".item");
+    const itemsdb = JSON.parse(localStorage.getItem("db")).lists.find(list => list.id == listId).items;
+    let allowedDone = false;
+
+    for(let i = 0; i < items.length; i++)
+    {
+        const itemId = items[i].id;
+        const item = itemsdb.find(item => item.id === itemId);
+        console.log({item, allowedDone})
+        if(item && item.isDone !== allowedDone && allowedDone === false)
+        {
+            allowedDone = true;
+        }
+        
+        if(!item || item.isDone !== allowedDone)
+        {
+            return false;
+        }
+    }
+    return true;    
+}
+// draging lap
+    // helpers
+const getParentWithThisClass = (element, className) => {
+    let parent = element;
+    while(parent)
+    {
+        if(parent.classList.contains(className))
+        {
+            return parent;
+        }
+        parent = parent.parentElement;
+    }
+    return false;
+}
+
+let globalId = "";
+let drageditem;
+const itemsContainer = document.querySelector("ul.items");
+itemsContainer.addEventListener("dragstart", (event) => {
+    if(event.target.classList.contains("item"))
+    {
+        drageditem = event.target;
+        globalId = event.target.id;
+        event.target.classList.add("hide-draggable");
+    }
+})
+
+itemsContainer.addEventListener("dragover", (event) => {
+    if(drageditem.style.position !== "absolute")
+    {
+        drageditem.style.position = "absolute";
+    }
+    const psudoItem = `
+                        <div class="psodu-item">
+
+                        </div>
+                        `
+    // Get the current mouse position
+    const mouseX = window.event.clientX;
+    const mouseY = window.event.clientY;
+
+    // Use elementFromPoint to get the element at the mouse position
+    const element = document.elementFromPoint(mouseX, mouseY);
+    const parent = getParentWithThisClass(element, "item");
+    if(parent && parent.id !== globalId)
+    {
+        const parentDimentions = parent.getBoundingClientRect();
+        const middle = parentDimentions.top + parentDimentions.height / 2;
+        if(mouseY < middle)
+        {   
+            if (!parent.previousElementSibling  || !parent.previousElementSibling.classList.contains("psodu-item"))
+            {
+                if(document.querySelector(".psodu-item"))
+                {
+                    document.querySelector(".psodu-item").remove();
+                }
+                parent.insertAdjacentHTML("beforebegin", psudoItem);
+            }
+        }
+        else
+        {
+            if(!parent.nextElementSibling || !parent.nextElementSibling.classList.contains("psodu-item"))
+            {
+                if(document.querySelector(".psodu-item"))
+                {
+                    document.querySelector(".psodu-item").remove();
+                }
+                parent.insertAdjacentHTML("afterend", psudoItem);    
+            }
+            
+        }
+
+    }
+})
+
+itemsContainer.addEventListener("dragend", (event) => {
+    const psudoItem = document.querySelector(".psodu-item");
+    const realCard = document.querySelector(`#${globalId}`);
+    realCard.classList.remove("hide-draggable");
+    drageditem.style.removeProperty("position");
+    if(psudoItem && realCard)
+    {
+        psudoItem.insertAdjacentElement("afterend", realCard);
+        psudoItem.remove();
+        if(isAcceptedItemsOrder())
+        {
+            scanItemsAndReorder();
+            removeAllItems();
+            initPage();
+        }
+        else
+        {
+            temperoryMessage("Items order not accepted: always done items should be at the end of the list");
+            removeAllItems();
+            initPage();
+        }
+    }
 })

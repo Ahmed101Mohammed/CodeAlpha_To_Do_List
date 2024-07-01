@@ -8,7 +8,7 @@ const ListItem = (content, isDone, parentId, id)=>
             htmlCode()
             {
                 return `
-                    <li class="${parentId} ${this.isDone? "done-list-item" : ""}" id="${this.id}"> 
+                    <li class="${parentId} ${this.isDone? "done-list-item" : ""} item" id="${this.id}" draggable="true"> 
                         <div class="body">
                             <input type="checkbox" ${this.addCheckedAttribute()}>
                             <p spellcheck="false">${content}<p>
