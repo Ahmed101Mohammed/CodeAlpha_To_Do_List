@@ -278,6 +278,8 @@ const ToDoList = (title, description, date, id, ...items) => {
             listCard.querySelector(".list-title").textContent = this.title;
             listCard.querySelector(".list-description").textContent = this.description;
             this.updateProgressComponentLive();
+            const listLink = document.querySelector(`a[href="#${this.id}"]`);
+            listLink.textContent = this.title;
         },
         validTitle()
         {
