@@ -25,17 +25,27 @@ let introductionAppToDoList = {
             parentId: parentId,
             id: `item${Date.now()+3}`}
         ,
-        {content: "Change the periority of one of your list items, by click on up or down arrow", 
+        {content: "Change the periority of one of your list items, by click on up or down arrow or use drag and drop", 
             isDone: false, 
             parentId: parentId,
             id: `item${Date.now()+4}`}
+        ,
+        {content: 'Edit one of the items.', 
+            isDone: false, 
+            parentId: parentId,
+            id: `item${Date.now()+5}`}
         ,
         {content: 'Delete one of the items.', 
             isDone: false, 
             parentId: parentId,
             id: `item${Date.now()+5}`}
         ,
-        {content: 'Change the periority of your To Do List, to have the 1st periority. (by click on up arrow)', 
+        {content: 'Edit your To Do List title, description and names.', 
+            isDone: false, 
+            parentId: parentId,
+            id: `item${Date.now()+5}`}
+        ,
+        {content: 'Change the periority of your To Do List, to have the 1st periority. (by click on up arrow or use drag and drop)', 
             isDone: false, 
             parentId: parentId,
             id: `item${Date.now()+6}`}
