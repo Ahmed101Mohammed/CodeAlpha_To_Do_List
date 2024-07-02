@@ -349,11 +349,12 @@ listsContainer.addEventListener("dragstart", (event) => {
     {
         dragedList = event.target;
         globalId = event.target.id;
-        event.target.classList.add("hide-draggable");
     }
 })
 
 listsContainer.addEventListener("dragover", (event) => {
+    if(!dragedList){return;}
+    dragedList.classList.add("hide-draggable");
     if(dragedList.style.position !== "absolute")
     {
         dragedList.style.position = "absolute";
@@ -373,8 +374,12 @@ listsContainer.addEventListener("dragover", (event) => {
     if(parent && parent.id !== globalId)
     {
         const parentDimentions = parent.getBoundingClientRect();
-        const middle = parentDimentions.left + parentDimentions.width / 2;
-        if(mouseX < middle)
+        const gridComputedStyle = window.getComputedStyle(listsContainer);
+        // get number of grid rows
+        const gridCulomnCount = gridComputedStyle.getPropertyValue("grid-template-columns").split(" ").length;
+        const middleX = parentDimentions.left + parentDimentions.width / 2;
+        const middleY = parentDimentions.top + parentDimentions.height / 2;
+        if((gridCulomnCount !== 1 && mouseX < middleX) || (gridCulomnCount === 1 && mouseY < middleY))
         {   
             if (!parent.previousElementSibling  || !parent.previousElementSibling.classList.contains("psodu-card"))
             {
@@ -385,7 +390,7 @@ listsContainer.addEventListener("dragover", (event) => {
                 parent.insertAdjacentHTML("beforebegin", psudoCard);
             }
         }
-        else
+        else if((gridCulomnCount !== 1 && mouseX >= middleX) || (gridCulomnCount === 1 && mouseY > middleY))
         {
             if(!parent.nextElementSibling || !parent.nextElementSibling.classList.contains("psodu-card"))
             {
@@ -402,6 +407,7 @@ listsContainer.addEventListener("dragover", (event) => {
 })
 
 listsContainer.addEventListener("dragend", (event) => {
+    if(!dragedList){return;}
     const psudoCard = document.querySelector(".psodu-card");
     const realCard = document.querySelector(`#${globalId}`);
     realCard.classList.remove("hide-draggable");

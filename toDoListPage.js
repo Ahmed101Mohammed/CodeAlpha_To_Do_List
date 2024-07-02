@@ -295,7 +295,6 @@ const isAcceptedItemsOrder = () =>
     {
         const itemId = items[i].id;
         const item = itemsdb.find(item => item.id === itemId);
-        console.log({item, allowedDone})
         if(item && item.isDone !== allowedDone && allowedDone === false)
         {
             allowedDone = true;
@@ -331,11 +330,12 @@ itemsContainer.addEventListener("dragstart", (event) => {
     {
         drageditem = event.target;
         globalId = event.target.id;
-        event.target.classList.add("hide-draggable");
     }
 })
 
 itemsContainer.addEventListener("dragover", (event) => {
+    if(!drageditem){return;}
+    drageditem.classList.add("hide-draggable");
     if(drageditem.style.position !== "absolute")
     {
         drageditem.style.position = "absolute";
@@ -384,6 +384,7 @@ itemsContainer.addEventListener("dragover", (event) => {
 })
 
 itemsContainer.addEventListener("dragend", (event) => {
+    if(!drageditem){return;}
     const psudoItem = document.querySelector(".psodu-item");
     const realCard = document.querySelector(`#${globalId}`);
     realCard.classList.remove("hide-draggable");
