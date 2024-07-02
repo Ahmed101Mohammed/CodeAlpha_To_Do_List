@@ -251,6 +251,11 @@ addEventListener("storage", (event) =>
         let targetListObject = ToDoList(targetList.title, targetList.description, targetList.date, targetList.id, ...targetList.items);
         targetListObject.updateListInDom();
     }
+    else if(dbStatus.name === "UpdatingListPeriority")
+    {
+        const psudoListObject = ToDoList();
+        psudoListObject.updateListCardPositionInUI();
+    }
 });
 
 // search for a list
@@ -314,7 +319,7 @@ const scanListsAndReorder = () => {
     }
     if(newLists.length > 0)
     {
-        localStorage.setItem("db", JSON.stringify({status: {name: "Ready", effectedListId: ""}, lists: newLists}));
+        localStorage.setItem("db", JSON.stringify({status: {name: "UpdatingListPeriority", effectedListId: ""}, lists: newLists}));
     }
 }
 

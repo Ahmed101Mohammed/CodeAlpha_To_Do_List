@@ -271,6 +271,7 @@ const scanItemsAndReorder = () => {
     if(newItems.length > 0)
     {
         targetList.items = newItems;
+        db.status = {name: "UpdatingItemPeriority", effectedListId: listId};
         localStorage.setItem("db", JSON.stringify(db));
     }
 }
