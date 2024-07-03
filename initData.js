@@ -38,21 +38,21 @@ let introductionAppToDoList = {
         {content: 'Delete one of the items.', 
             isDone: false, 
             parentId: parentId,
-            id: `item${Date.now()+5}`}
+            id: `item${Date.now()+6}`}
         ,
         {content: 'Edit your To Do List title, description and names.', 
             isDone: false, 
             parentId: parentId,
-            id: `item${Date.now()+5}`}
+            id: `item${Date.now()+7}`}
         ,
         {content: 'Change the periority of your To Do List, to have the 1st periority. (by click on up arrow or use drag and drop)', 
             isDone: false, 
             parentId: parentId,
-            id: `item${Date.now()+6}`}
+            id: `item${Date.now()+8}`}
         ,
         {content: 'Delete "Discovering TODOly application" To Do List, now you are ready to use all ToDoly features.', 
             isDone: false, 
             parentId: parentId,
-            id: `item${Date.now()+7}`}
+            id: `item${Date.now()+9}`}
     ]
 }
