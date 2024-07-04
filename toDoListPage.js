@@ -408,3 +408,30 @@ itemsContainer.addEventListener("dragend", (event) => {
         }
     }
 })
+// click to edit hover event for H2, p, li > p
+
+document.body.addEventListener( "mouseover" ,event =>{
+    const target = event.target;
+    if(target.nodeName === "H2" || 
+        (target.nodeName === "P" && target.classList.contains("list-description")) ||
+        (target.nodeName === "P" && target.parentNode.parentNode.classList.contains("item"))
+        )
+    {
+        document.documentElement.style.setProperty("--opacity", "1");
+       
+        setTimeout(() => {
+            document.documentElement.style.setProperty("--opacity", "0");;
+        }, 3000);
+    }
+})
+
+document.body.addEventListener( "mouseout" ,event =>{
+    const target = event.target;
+    if(target.nodeName === "H2" || 
+        (target.nodeName === "P" && target.classList.contains("list-description")) ||
+        (target.nodeName === "P" && target.parentNode.parentNode.classList.contains("item"))
+        )
+    {
+        document.documentElement.style.setProperty("--opacity", "0");
+    }
+})

@@ -1,3 +1,10 @@
+/* click to edit obacity variable */
+:root
+{
+    --opacity: 0;
+}
+
+
 body
 {
     display: flex;
@@ -44,6 +51,35 @@ header h2
     color: var(--black);
     outline: none;
     padding: 4px;
+    position: relative;
+}
+
+header h2::before
+{
+    content: "click to edit";
+    color: var(--black-50);
+    font-size: 16px;
+    outline: none;    
+    padding: 4px;
+    display: block;
+    opacity: 0;
+    transition: 0.3s;
+    background-color: var(--white);
+    position: absolute;
+    left: 0px;
+    top: -20px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition-duration: 0.6s;
+}
+
+header h2:hover::before
+{
+    opacity: var(--opacity);
 }
 
 @media (max-width: 700px)
@@ -64,6 +100,34 @@ header p
     font-size: 16px;
     outline: none;
     padding: 4px;
+    position: relative;
+}
+
+header p::before
+{
+    content: "click to edit";
+    color: var(--black-50);
+    font-size: 16px;
+    outline: none;
+    display: block;
+    opacity: 0;
+    transition: 0.3s;
+    position: absolute;
+    left: 0px;
+    top: -15px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    background-color: var(--white);
+    transition-duration: 0.6s;
+}
+
+header p:hover::before
+{
+    opacity: var(--opacity);
 }
 
 /* main */
@@ -240,6 +304,33 @@ li .body p
     border: none;
     outline: none;
     padding: 4px;
+    position: relative;
+}
+
+li .body p::before
+{
+    content: "Click to edit";
+    color: var(--black-50);
+    font-size: 12px;
+    font-weight: 600;
+    position: absolute;
+    left: 0px;
+    top: -20px;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    background-color: var(--white);
+    padding: 5px;
+    transition-duration: 0.6s;
+}
+
+li .body p:hover::before
+{
+    opacity: var(--opacity);
 }
 @media (max-width: 480px)
 {
