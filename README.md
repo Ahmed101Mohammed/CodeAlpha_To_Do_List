@@ -28,7 +28,7 @@ I found that the 1st version of the application doesn't have huge data, and it s
 
 #### 2. Support handling multiple to-do lists on several pages.
 ##### Problem description:
-You can click on the To Do List title and drag it to open the To-Do List in a new tap, so I asked myself how to move the To-Do List to the opened page, and I have a basic solution, by adding a field in the Browser LocalStorage that contain the title(it's unique) of the clicked list. But the real question is what if the user dragged multiple titles of To Do Lists? the LocalStorage will update to contain just the last opened To Do List. So how to solve this problem?!
+You can click on the To Do List title and drag it to open the To-Do List in a new tap, so I asked myself how to move the To-Do List to the opened page, and I have a basic solution, by adding a field in the Browser LocalStorage that contain the title(it's unique) of the clicked list. But the real question is what if the user dragged multiple titles of To Do Lists? the LocalStorage will update to contain just the last opened To Do List. So how do we solve this problem?!
 
 ##### Problem solution:
 I find that instead of saving the browser data in LocalStorage, which updates each time when you open a new To Do List, I can contain the unique information about the opened List, in the page URL, each page can contain its URL, so each page can deal with its To Do List. So multi-to-do list handling is now supported.
@@ -43,4 +43,4 @@ I find that instead of saving the browser data in LocalStorage, which updates ea
 > ```
 
 ### Running:
-[Guiding Youtube video]( https://youtu.be/6BlZ7qfT0jU?si=vOrNjvl9BItbroBs)
+[Guiding Youtube video](https://youtu.be/cvwGr5EaK-Y?si=dAkn1oYpkoMc_n0D)
